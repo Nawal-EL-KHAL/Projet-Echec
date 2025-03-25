@@ -11,7 +11,7 @@ public class MyFrame extends JFrame implements Observer {
     JLabel[][] tabJLabel = new JLabel[8][8];
     public MyFrame(Model model) {
         this.model = model;
-        setSize(420,420);
+        setSize(480,480);
 
         build();
         setVisible(true);
@@ -25,6 +25,7 @@ public class MyFrame extends JFrame implements Observer {
         for (int i=0; i<8; i++){
             for (int j=0; j<8; j++){
                 JLabel jl = new JLabel();
+                jl.setBounds(i*60,j*60, 60*(i+1),60*(j+1));
                 jl.setOpaque(true);
                 if ((i+j)%2 == 0){
                     jl.setBackground(Color.WHITE);
@@ -54,6 +55,7 @@ public class MyFrame extends JFrame implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        tabJLabel[model.i][model.j].setBackground(Color.RED);
+        ImageIcon image = new ImageIcon("icons/bb.png");
+        tabJLabel[model.i][model.j].setIcon(image);
     }
 }
