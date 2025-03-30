@@ -3,16 +3,22 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.util.Observable;
 import java.util.Observer;
 
 public class MyFrame extends JFrame implements Observer {
     private Model model;
     JLabel[][] tabJLabel = new JLabel[8][8];
+    private final int sizeX = 10; // taille de la grille affichée
+    private final int sizeY = 50;
+    private static final int pxCase = 50; // nombre de pixel par case
 
     public MyFrame(Model model) {
         this.model = model;
-        setSize(480,480);
+        setTitle("Jeu d'Échecs");
+        setResizable(false);
+        setSize(sizeX * pxCase, sizeX * pxCase);
         build();
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Ferme le programme lorsque la fenêtre est fermée
@@ -31,6 +37,9 @@ public class MyFrame extends JFrame implements Observer {
                 } else {
                     jl.setBackground(Color.BLACK);
                 }
+                // Centre l'icône dans le JLabel
+                jl.setHorizontalAlignment(SwingConstants.CENTER);
+                jl.setVerticalAlignment(SwingConstants.CENTER);
                 jp.add(jl);
                 tabJLabel[i][j] = jl;
 
@@ -51,9 +60,21 @@ public class MyFrame extends JFrame implements Observer {
         }
     }
 
+    private ImageIcon chargerIcone(String urlIcone) {
+        BufferedImage image = null;
+
+        ImageIcon icon = new ImageIcon(urlIcone);
+
+        // Redimensionner l'icône
+        Image img = icon.getImage().getScaledInstance(pxCase, pxCase, Image.SCALE_SMOOTH);
+        ImageIcon resizedIcon = new ImageIcon(img);
+
+        return resizedIcon;
+    }
+
     @Override
     public void update(Observable o, Object arg) {
-        ImageIcon icon = new ImageIcon("icons/black-bishop.png");
+        ImageIcon icon = chargerIcone("icons/black-bishop.png");
         tabJLabel[model.i][model.j].setIcon(icon);
     }
 }
