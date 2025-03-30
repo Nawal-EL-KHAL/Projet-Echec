@@ -7,7 +7,7 @@ public class Model extends Observable {
     public void set(int i, int j){
         this.i = i;
         this.j = j;
-        setChanged();
-        notifyObservers();
+        setChanged(); // Indique qu’un changement a eu lieu
+        notifyObservers();  // Notifie tous les observateurs via update()
     }
 }
