@@ -4,8 +4,13 @@ public class Joueur {
 
     public Coup getCoup(){
         synchronized (jeu) {
-            wait();
+            try {
+                 jeu.wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
-    };
-    return jeu.coup;
+        return jeu.coup;
+
+    }
 }

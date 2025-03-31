@@ -1,3 +1,4 @@
 public class Coup {
-    private
+    Coup dep;
+    Coup arr;
 }

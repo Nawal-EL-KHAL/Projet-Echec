@@ -1,5 +1,5 @@
 public class Jeu extends Thread {
-    private Coup coup;
+    protected Coup coup;
     private Boolean partieTerminée;
 
 
