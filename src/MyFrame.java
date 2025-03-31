@@ -21,7 +21,8 @@ public class MyFrame extends JFrame implements Observer {
         setSize(sizeX * pxCase, sizeX * pxCase);
         build();
         setVisible(true);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Ferme le programme lorsque la fenêtre est fermée
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        installation();
     }
 
     public void build(){
@@ -43,7 +44,7 @@ public class MyFrame extends JFrame implements Observer {
                 jp.add(jl);
                 tabJLabel[i][j] = jl;
 
-//                System.out.println(i + " " + j); // Pour débogage
+//
 
                 final int ii=i;
                 final int jj=j;
@@ -72,9 +73,71 @@ public class MyFrame extends JFrame implements Observer {
         return resizedIcon;
     }
 
-    @Override
+
+
     public void update(Observable o, Object arg) {
-        ImageIcon icon = chargerIcone("icons/black-bishop.png");
-        tabJLabel[model.i][model.j].setIcon(icon);
+        ImageIcon fouNoir = chargerIcone("icons/black-bishop.png");
+        ImageIcon roiNoir = chargerIcone("icons/black-king.png");
+        ImageIcon cavalierNoir = chargerIcone("icons/black-knight.png");
+        ImageIcon pionNoir = chargerIcone("icons/black-pawn.png");
+        ImageIcon reineNoir = chargerIcone("icons/black-queen.png");
+        ImageIcon tourNoir = chargerIcone("icons/black-rook.png");
+        ImageIcon fouBlanc = chargerIcone("icons/white-bishop.png");
+        ImageIcon roiBlanc = chargerIcone("icons/white-king.png");
+        ImageIcon cavalierBlanc = chargerIcone("icons/white-knight.png");
+        ImageIcon pionBlanc = chargerIcone("icons/white-pawn.png");
+        ImageIcon reineBlanc = chargerIcone("icons/white-queen.png");
+        ImageIcon tourBlanc = chargerIcone("icons/white-rook.png");
+        tabJLabel[0][0].setIcon(tourNoir);
+        tabJLabel[0][1].setIcon(cavalierNoir);
+        tabJLabel[0][2].setIcon(fouNoir);
+        tabJLabel[0][3].setIcon(reineNoir);
+        tabJLabel[0][4].setIcon(roiNoir);
+        tabJLabel[0][5].setIcon(fouNoir);
+        tabJLabel[0][6].setIcon(cavalierNoir);
+        tabJLabel[0][7].setIcon(tourNoir);
+        tabJLabel[7][0].setIcon(tourBlanc);
+        tabJLabel[7][1].setIcon(cavalierBlanc);
+        tabJLabel[7][2].setIcon(fouBlanc);
+        tabJLabel[7][3].setIcon(reineBlanc);
+        tabJLabel[7][4].setIcon(roiBlanc);
+        tabJLabel[7][5].setIcon(fouBlanc);
+        tabJLabel[7][6].setIcon(cavalierBlanc);
+        tabJLabel[7][7].setIcon(tourBlanc);
+        for (int i=0; i<8; i++){tabJLabel[1][i].setIcon(pionNoir);}
+        for (int i=0; i<8; i++){tabJLabel[6][i].setIcon(pionBlanc);}
+    }
+
+    public void installation() {
+        ImageIcon fouNoir = chargerIcone("icons/black-bishop.png");
+        ImageIcon roiNoir = chargerIcone("icons/black-king.png");
+        ImageIcon cavalierNoir = chargerIcone("icons/black-knight.png");
+        ImageIcon pionNoir = chargerIcone("icons/black-pawn.png");
+        ImageIcon reineNoir = chargerIcone("icons/black-queen.png");
+        ImageIcon tourNoir = chargerIcone("icons/black-rook.png");
+        ImageIcon fouBlanc = chargerIcone("icons/white-bishop.png");
+        ImageIcon roiBlanc = chargerIcone("icons/white-king.png");
+        ImageIcon cavalierBlanc = chargerIcone("icons/white-knight.png");
+        ImageIcon pionBlanc = chargerIcone("icons/white-pawn.png");
+        ImageIcon reineBlanc = chargerIcone("icons/white-queen.png");
+        ImageIcon tourBlanc = chargerIcone("icons/white-rook.png");
+        tabJLabel[0][0].setIcon(tourNoir);
+        tabJLabel[0][1].setIcon(cavalierNoir);
+        tabJLabel[0][2].setIcon(fouNoir);
+        tabJLabel[0][3].setIcon(reineNoir);
+        tabJLabel[0][4].setIcon(roiNoir);
+        tabJLabel[0][5].setIcon(fouNoir);
+        tabJLabel[0][6].setIcon(cavalierNoir);
+        tabJLabel[0][7].setIcon(tourNoir);
+        tabJLabel[7][0].setIcon(tourBlanc);
+        tabJLabel[7][1].setIcon(cavalierBlanc);
+        tabJLabel[7][2].setIcon(fouBlanc);
+        tabJLabel[7][3].setIcon(reineBlanc);
+        tabJLabel[7][4].setIcon(roiBlanc);
+        tabJLabel[7][5].setIcon(fouBlanc);
+        tabJLabel[7][6].setIcon(cavalierBlanc);
+        tabJLabel[7][7].setIcon(tourBlanc);
+        for (int i=0; i<8; i++){tabJLabel[1][i].setIcon(pionNoir);}
+        for (int i=0; i<8; i++){tabJLabel[6][i].setIcon(pionBlanc);}
     }
 }
