@@ -13,6 +13,8 @@ public class MyFrame extends JFrame implements Observer {
     private final int sizeX = 10; // taille de la grille affichée
     private final int sizeY = 50;
     private static final int pxCase = 50; // nombre de pixel par case
+    private JLabel selectedPiece = null; // Stocke la pièce sélectionnée
+    private int selectedRow = -1, selectedCol = -1; // Coordonnées de la pièce sélectionnée
 
     public MyFrame(Model model) {
         this.model = model;
@@ -43,20 +45,24 @@ public class MyFrame extends JFrame implements Observer {
                 jl.setVerticalAlignment(SwingConstants.CENTER);
                 jp.add(jl);
                 tabJLabel[i][j] = jl;
-
-//
-
                 final int ii=i;
                 final int jj=j;
-                jl.addMouseListener(
-                        new MouseAdapter() {
-                            @Override
-                            public void mouseClicked(MouseEvent e) {
-                                model.set(ii,jj);
+                jl.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        handleClick(ii, jj);
+                    }
+                });
+
+//                jl.addMouseListener(
+//                        new MouseAdapter() {
+//                            @Override
+//                            public void mouseClicked(MouseEvent e) {
+//                                model.set(ii,jj);
 //                               System.out.println(ii + " " + jj); // Pour débogage
-                            }
-                        }
-                );
+//                            }
+//                        }
+//                );
             }
         }
     }
@@ -113,5 +119,29 @@ public class MyFrame extends JFrame implements Observer {
         tabJLabel[7][7].setIcon(tourBlanc);
         for (int i=0; i<8; i++){tabJLabel[1][i].setIcon(pionNoir);}
         for (int i=0; i<8; i++){tabJLabel[6][i].setIcon(pionBlanc);}
+    }
+
+    private void handleClick(int row, int col) {
+        JLabel clickedLabel = tabJLabel[row][col];
+
+        if (selectedPiece == null) {
+            // Sélectionne la pièce si elle est présente
+            if (clickedLabel.getIcon() != null) {
+                selectedPiece = clickedLabel;
+                selectedRow = row;
+                selectedCol = col;
+                clickedLabel.setBorder(BorderFactory.createLineBorder(Color.RED, 2)); // Visuel pour la sélection
+            }
+        } else {
+            // Déplace la pièce vers la nouvelle case si elle est vide ou occupée par un adversaire
+            if (clickedLabel != selectedPiece) {
+                clickedLabel.setIcon(selectedPiece.getIcon());
+                selectedPiece.setIcon(null);
+                selectedPiece.setBorder(null); // Supprime le cadre rouge
+                selectedPiece = null;
+                selectedRow = -1;
+                selectedCol = -1;
+            }
+        }
     }
 }

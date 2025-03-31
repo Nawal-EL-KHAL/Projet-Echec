@@ -1,6 +1,7 @@
-public class Jeu extends Thread {
+public abstract class Jeu extends Thread {
     protected Coup coup;
     private Boolean partieTerminée;
+    private Joueur joueur;
 
 
     public void jouerPartie(){
@@ -8,6 +9,14 @@ public class Jeu extends Thread {
             Coup c = getSuivant().getCoup();
             appliquerCoup(c);
         }
+    }
+
+    public void appliquerCoup(Coup coup){
+
+    };
+
+    private Joueur getSuivant() {
+        return joueur;
     }
 
     @Override
