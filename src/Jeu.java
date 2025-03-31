@@ -1,7 +1,7 @@
 public abstract class Jeu extends Thread {
     protected Coup coup;
-    private Boolean partieTerminée;
-    private Joueur joueur;
+    protected Boolean partieTerminée;
+    protected Joueur joueur;
 
 
     public void jouerPartie(){

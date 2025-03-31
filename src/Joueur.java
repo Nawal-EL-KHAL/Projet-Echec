@@ -1,6 +1,6 @@
 public class Joueur {
 
-    private Jeu jeu;
+    protected Jeu jeu;
 
     public Coup getCoup(){
         synchronized (jeu) {
