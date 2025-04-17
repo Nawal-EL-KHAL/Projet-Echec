@@ -123,6 +123,8 @@ public class MyFrame extends JFrame implements Observer {
 
     private void handleClick(int row, int col) {
         JLabel clickedLabel = tabJLabel[row][col];
+        int jLabelRow = row;
+        int jLabelCol = col;
 
         if (selectedPiece == null) {
             // Sélectionne la pièce si elle est présente
@@ -135,13 +137,50 @@ public class MyFrame extends JFrame implements Observer {
         } else {
             // Déplace la pièce vers la nouvelle case si elle est vide ou occupée par un adversaire
             if (clickedLabel != selectedPiece) {
-                clickedLabel.setIcon(selectedPiece.getIcon());
-                selectedPiece.setIcon(null);
+
+                coupCavalier(jLabelRow, jLabelCol, selectedRow, selectedCol);
+
+
+
                 selectedPiece.setBorder(null); // Supprime le cadre rouge
                 selectedPiece = null;
                 selectedRow = -1;
                 selectedCol = -1;
+
             }
         }
+    }
+
+    private void coupPionBlanc(int jLabelRow, int jLabelCol, int selectedRow, int selectedCol) {
+        if (selectedRow - jLabelRow  != 1 || selectedCol - jLabelCol  != 0) {
+            System.out.println("Déplacement invalide");
+        }else {
+            tabJLabel[jLabelRow][jLabelCol].setIcon(selectedPiece.getIcon());
+            selectedPiece.setIcon(null);
+
+        }
+
+    }
+
+    private void coupPionNoir(int jLabelRow, int jLabelCol, int selectedRow, int selectedCol) {
+        if (selectedRow - jLabelRow  != -1 || selectedCol - jLabelCol  != 0) {
+            System.out.println("Déplacement invalide");
+        }else {
+            tabJLabel[jLabelRow][jLabelCol].setIcon(selectedPiece.getIcon());
+            selectedPiece.setIcon(null);
+
+        }
+
+    }
+
+    private void coupCavalier(int jLabelRow, int jLabelCol, int selectedRow, int selectedCol) {
+        if ((Math.abs(selectedRow - jLabelRow)  != 1 && Math.abs(selectedCol - jLabelCol)  != 2) && (Math.abs(selectedRow - jLabelRow)  != 2 && Math.abs(selectedCol - jLabelCol)  != 1 )) {
+            System.out.println("Déplacement invalide");
+        }else {
+            tabJLabel[jLabelRow][jLabelCol].setIcon(selectedPiece.getIcon());
+            selectedPiece.setIcon(null);
+
+        }
+
     }
 }

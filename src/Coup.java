@@ -1,4 +1,4 @@
 public class Coup {
-    Coup dep;
-    Coup arr;
+    protected int xDep;
+    protected int yDep;
 }
