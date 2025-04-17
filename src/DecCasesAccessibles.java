@@ -2,9 +2,22 @@ import java.util.ArrayList;
 
 public abstract class DecCasesAccessibles {
 
-    DecCasesAccessibles base = new DecCasesAccessibles() {};
+    protected DecCasesAccessibles base;
 
-    public abstract ArrayList<Case> getMesCases(){
-        return base.getMesCases();
+    public DecCasesAccessibles(DecCasesAccessibles base) {
+        this.base = base;
+    }
+
+    // méthode à implémenter dans les sous-classes
+    public abstract ArrayList<Case> getMesCA();
+
+    public ArrayList<Case> getCA() {
+        ArrayList<Case> retour = new ArrayList<>(getMesCA());
+
+        if (base != null) {
+            retour.addAll(base.getCA());
+        }
+
+        return retour;
     }
 }
