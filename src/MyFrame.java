@@ -8,6 +8,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class MyFrame extends JFrame implements Observer {
+
     private Model model;
     JLabel[][] tabJLabel = new JLabel[8][8];
     private final int sizeX = 10; // taille de la grille affichée
@@ -26,6 +27,7 @@ public class MyFrame extends JFrame implements Observer {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         installation();
     }
+
 
     public void build(){
         JPanel jp = new JPanel(new GridLayout(8,8));
@@ -67,6 +69,7 @@ public class MyFrame extends JFrame implements Observer {
         }
     }
 
+
     private ImageIcon chargerIcone(String urlIcone) {
         BufferedImage image = null;
 
@@ -78,7 +81,6 @@ public class MyFrame extends JFrame implements Observer {
 
         return resizedIcon;
     }
-
 
 
     @Override
@@ -121,6 +123,7 @@ public class MyFrame extends JFrame implements Observer {
         for (int i=0; i<8; i++){tabJLabel[6][i].setIcon(pionBlanc);}
     }
 
+
     private void handleClick(int row, int col) {
         JLabel clickedLabel = tabJLabel[row][col];
         int jLabelRow = row;
@@ -132,7 +135,7 @@ public class MyFrame extends JFrame implements Observer {
                 selectedPiece = clickedLabel;
                 selectedRow = row;
                 selectedCol = col;
-                clickedLabel.setBorder(BorderFactory.createLineBorder(Color.RED, 2)); // Visuel pour la sélection
+                clickedLabel.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
             }
         } else {
             // Déplace la pièce vers la nouvelle case si elle est vide ou occupée par un adversaire

@@ -1,9 +1,14 @@
 public abstract class Jeu extends Thread {
     protected Coup coup;
+<<<<<<< HEAD
     private boolean partieTerminee = false;
     private Joueur joueur1;
     private Joueur joueur2;
     private Joueur joueurCourant;
+=======
+    protected Boolean partieTerminée;
+    protected Joueur joueur;
+>>>>>>> 4a042e22b7c1c1ed4738c094b3715a38fc083665
 
     public Jeu(Joueur joueur1, Joueur joueur2) {
         this.joueur1 = joueur1;
