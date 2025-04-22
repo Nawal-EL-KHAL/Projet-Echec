@@ -1,3 +1,4 @@
+
 import java.util.Observable;
 
 public class Plateau extends Observable {
@@ -26,3 +27,4 @@ public class Plateau extends Observable {
         return cible != null && cible.estBlanche() == estBlanc;
     }
 }
+
