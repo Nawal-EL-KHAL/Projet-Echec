@@ -8,9 +8,7 @@ public class Jeu {
     private Plateau plateau;
     private Position caseSelectionnee = null;
 
-    private boolean blancEnCours;
     private boolean estTermine = false;
-
 
     public Jeu(Plateau plateau) {
         this.plateau = plateau;
@@ -21,7 +19,7 @@ public class Jeu {
 
     public void gererClic(int x, int y) {
         if (estTermine()) {
-            System.out.println( "La partie est terminée !");
+            System.out.println("La partie est terminée !");
             return;
         }
 
@@ -31,7 +29,7 @@ public class Jeu {
         if (caseSelectionnee == null) {
             if (estTourDuJoueur(posCliquee)) {
                 caseSelectionnee = posCliquee;
-//                labels[x][y].setBorder(BorderFactory.createLineBorder(Color.BLUE, 4));
+                plateau.couleur();
             } else {
                 System.out.println("Ce n'est pas ton tour !");
             }
@@ -40,11 +38,17 @@ public class Jeu {
                 boolean deplacementReussi = tenterDeplacer(caseSelectionnee, posCliquee);
                 if (!deplacementReussi) {
                     System.out.println("Déplacement invalide !");
-                } else if (estTermine()) {
-                    System.out.println("Fin de partie. Le joueur " + (estBlancEnCours() ? "noir" : "blanc") + " a gagné !");
+                } else {
+                    if (estPositionEchec()) {
+                        System.out.println("Échec au roi " + (joueurActuel.estBlanc() ? "blanc" : "noir"));
+                    }
+
+                    if (estTermine()) {
+                        System.out.println("Fin de partie. Le joueur " + (joueurActuel.estBlanc() ? "noir" : "blanc") + " a gagné !");
+                    }
                 }
             }
-//            labels[caseSelectionnee.x][caseSelectionnee.y].setBorder(null);
+            plateau.viderSelection();
             caseSelectionnee = null;
         }
     }
@@ -63,8 +67,18 @@ public class Jeu {
         if (piece != null && piece.estBlanche() == joueurActuel.estBlanc()) {
             List<Position> deplacements = piece.getDeplacementsPossibles(plateau, from);
             if (deplacements.contains(to)) {
+                // On sauvegarde l'état
+                Piece cible = plateau.getPiece(to.x, to.y);
                 plateau.placerPiece(piece, to.x, to.y);
                 plateau.placerPiece(null, from.x, from.y);
+
+                // Si le roi du joueur actuel est en échec après le déplacement, on annule
+                if (estPositionEchecPour(joueurActuel.estBlanc())) {
+                    plateau.placerPiece(piece, from.x, from.y);
+                    plateau.placerPiece(cible, to.x, to.y);
+                    return false;
+                }
+
                 changerTour();
                 return true;
             }
@@ -77,28 +91,25 @@ public class Jeu {
     }
 
     public void commencer() {
-        boolean b = !estPositionEchec();
         estTermine = false;
-        blancEnCours = true;
-        while (!estTermine()){
-
+        if (estPositionEchec()) {
+            System.out.println("Échec au roi " + (joueurActuel.estBlanc() ? "blanc" : "noir") + " !");
         }
-
     }
 
     public boolean estTermine() {
         return estTermine;
     }
 
-    public boolean estBlancEnCours() {
-        return blancEnCours;
-    }
 
     public boolean estPositionEchec() {
-        boolean blanc = blancEnCours;
+        return estPositionEchecPour(joueurActuel.estBlanc());
+    }
+
+    private boolean estPositionEchecPour(boolean blanc) {
         Position positionRoi = null;
 
-        // 1. Trouver la position du roi du joueur courant
+        // 1. Trouver la position du roi du joueur concerné
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 Piece p = plateau.getPiece(i, j);
@@ -109,16 +120,16 @@ public class Jeu {
             }
         }
 
-        if (positionRoi == null) return false; // Roi introuvable ?!
+        if (positionRoi == null) return false; // Pas de roi trouvé (bug ?)
 
-        // 2. Parcourir toutes les pièces adverses
+        // 2. Parcourir les pièces ennemies
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 Piece p = plateau.getPiece(i, j);
                 if (p != null && p.estBlanche() != blanc) {
                     List<Position> deplacements = p.getDeplacementsPossibles(plateau, new Position(i, j));
                     if (deplacements.contains(positionRoi)) {
-                        return true; // Une pièce ennemie peut capturer le roi
+                        return true;
                     }
                 }
             }
@@ -127,4 +138,7 @@ public class Jeu {
         return false;
     }
 
+    public Position getCaseSelectionnee() {
+        return caseSelectionnee;
+    }
 }

@@ -36,14 +36,29 @@ public class Plateau extends Observable {
             placerPiece(new DeplacementPion(new PieceNeutre(true, Type.Pion)), 6, i);
         }
 
-        setChanged();
-        notifyObservers();
+        relationVue();
     }
 
     public void placerPiece(Piece piece, int x, int y) {
         cases[x][y] = piece;
+        relationVue();
+
+    }
+
+    public void relationVue(){
         setChanged();
-        notifyObservers();
+        notifyObservers("rafraichissement");
+    }
+
+    public void viderSelection() {
+        setChanged();
+        notifyObservers("vider");
+    }
+
+
+    public void couleur(){
+        setChanged();
+        notifyObservers("couleur");
     }
 
     public Piece getPiece(int x, int y) {

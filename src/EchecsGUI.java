@@ -49,13 +49,41 @@ public class EchecsGUI implements Observer {
     }
 
 
-
-
-
     @Override
     public void update(Observable o, Object arg) {
-        rafraichirGrille();
+        if (arg instanceof String) {
+            switch ((String) arg) {
+                case "rafraichissement":
+                    rafraichirGrille();
+                    break;
+                case "couleur":
+                    colorierSelection();
+                    break;
+                case "vider":
+                    viderSelection();
+                    break;
+                default:
+                    System.out.println("Type de mise à jour inconnu : " + arg);
+            }
+        }
     }
+
+    public void colorierSelection() {
+        if (jeu.getCaseSelectionnee() != null) {
+            Position pos = jeu.getCaseSelectionnee();
+            labels[pos.x][pos.y].setBorder(BorderFactory.createLineBorder(Color.BLUE, 3));  // ou une autre couleur
+        }
+    }
+
+    public void viderSelection() {
+        if (jeu.getCaseSelectionnee() != null) {
+            Position pos = jeu.getCaseSelectionnee();
+            labels[pos.x][pos.y].setBorder(null); // Retire la bordure
+        }
+    }
+
+
+
 
     private void rafraichirGrille() {
         for (int i = 0; i < 8; i++) {
