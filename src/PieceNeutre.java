@@ -1,17 +1,17 @@
-import javax.swing.*;
-import java.awt.Image;
+
 import java.util.*;
 
 public class PieceNeutre implements Piece {
+    private final Type typePiece;
     private boolean estBlanc;
-    private String nom;
     private String cheminImage;
 
-    public PieceNeutre(boolean estBlanc, String nom, String cheminImage) {
+    public PieceNeutre(boolean estBlanc, Type typePiece, String cheminImage) {
         this.estBlanc = estBlanc;
-        this.nom = nom;
         this.cheminImage = cheminImage;
+        this.typePiece = typePiece;
     }
+
 
     @Override
     public List<Position> getDeplacementsPossibles(Plateau plateau, Position pos) {
@@ -23,15 +23,10 @@ public class PieceNeutre implements Piece {
         return estBlanc;
     }
 
-    @Override
-    public Icon getIcon() {
-        ImageIcon icon = new ImageIcon(cheminImage);
-        Image image = icon.getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH);
-        return new ImageIcon(image);
-    }
+
 
     @Override
-    public String getNom() {
-        return nom;
+    public Type getTypePiece() {
+        return typePiece;
     }
 }

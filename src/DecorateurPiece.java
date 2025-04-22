@@ -16,11 +16,9 @@ public abstract class DecorateurPiece implements Piece {
         return piece.estBlanche();
     }
 
-    public Icon getIcon() {
-        return piece.getIcon();
-    }
 
-    public String getNom() {
-        return piece.getNom();
+
+    public Type getTypePiece() {
+        return piece.getTypePiece();
     }
 }
