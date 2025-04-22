@@ -1,5 +1,4 @@
 import java.util.*;
-import javax.swing.*;
 
 public abstract class DecorateurPiece implements Piece {
     protected Piece piece;

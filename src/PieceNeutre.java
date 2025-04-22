@@ -4,11 +4,10 @@ import java.util.*;
 public class PieceNeutre implements Piece {
     private final Type typePiece;
     private boolean estBlanc;
-    private String cheminImage;
+    private Position position;
 
-    public PieceNeutre(boolean estBlanc, Type typePiece, String cheminImage) {
+    public PieceNeutre(boolean estBlanc, Type typePiece) {
         this.estBlanc = estBlanc;
-        this.cheminImage = cheminImage;
         this.typePiece = typePiece;
     }
 
@@ -29,4 +28,6 @@ public class PieceNeutre implements Piece {
     public Type getTypePiece() {
         return typePiece;
     }
+
+
 }
