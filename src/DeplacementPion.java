@@ -1,0 +1,40 @@
+// === Décorateur de déplacement des pions===
+
+import java.util.*;
+
+class DeplacementPion extends DecorateurPiece {
+
+    public DeplacementPion(Piece piece) {
+        super(piece);
+    }
+
+    @Override
+    public List<Position> getDeplacementsPossibles(Plateau plateau, Position pos) {
+        List<Position> positions = new ArrayList<>();
+        int direction = estBlanche() ? -1 : 1;
+        int x = pos.x + direction;
+
+        if (x >= 0 && x < 8 && !plateau.estOccupe(new Position(x, pos.y))) {
+            positions.add(new Position(x, pos.y));
+        }
+
+        if ((estBlanche() && pos.x == 6) || (!estBlanche() && pos.x == 1)) {
+            Position deuxCases = new Position(pos.x + 2 * direction, pos.y);
+            if (!plateau.estOccupe(new Position(x, pos.y)) && !plateau.estOccupe(deuxCases)) {
+                positions.add(deuxCases);
+            }
+        }
+
+        for (int dy : new int[]{-1, 1}) {
+            int y = pos.y + dy;
+            if (y >= 0 && y < 8 && x >= 0 && x < 8) {
+                Position diag = new Position(x, y);
+                if (plateau.estOccupe(diag) && plateau.getPiece(diag.x, diag.y).estBlanche() != estBlanche()) {
+                    positions.add(diag);
+                }
+            }
+        }
+
+        return positions;
+    }
+}

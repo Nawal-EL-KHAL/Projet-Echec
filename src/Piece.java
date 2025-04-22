@@ -1,7 +1,9 @@
-import java.util.ArrayList;
+import javax.swing.*;
+import java.util.List;
 
-public abstract class Piece {
-
-    DecCasesAccessibles dCA = new DecCasesAccessibles() {
-    };
+public interface Piece {
+    List<Position> getDeplacementsPossibles(Plateau plateau, Position pos);
+    boolean estBlanche();
+    Icon getIcon();
+    String getNom();
 }
