@@ -10,6 +10,10 @@ public class EchecsGUI implements Observer {
     private JLabel[][] labels;
     private Plateau plateau;
     private Position caseSelectionnee = null;
+    private Joueur joueurBlanc = new Joueur("Blanc", true);
+    private Joueur joueurNoir = new Joueur("Noir", false);
+    private Joueur joueurActuel = joueurBlanc;
+
 
     public EchecsGUI() {
         frame = new JFrame("Échecs");
@@ -204,23 +208,33 @@ public class EchecsGUI implements Observer {
         Piece pieceCliquee = plateau.getPiece(x, y);
 
         if (caseSelectionnee == null) {
-            if (pieceCliquee != null) {
+            if (pieceCliquee != null && pieceCliquee.estBlanche() == joueurActuel.estBlanc()) {
                 caseSelectionnee = posCliquee;
                 labels[x][y].setBorder(BorderFactory.createLineBorder(Color.BLUE, 4));
+            } else {
+                System.out.println("Ce n'est pas ton tour !");
             }
         } else {
             Piece pieceADeplacer = plateau.getPiece(caseSelectionnee.x, caseSelectionnee.y);
-            List<Position> deplacements = pieceADeplacer.getDeplacementsPossibles(plateau, caseSelectionnee);
 
-            if (deplacements.contains(posCliquee)) {
-                plateau.placerPiece(pieceADeplacer, x, y);
-                plateau.placerPiece(null, caseSelectionnee.x, caseSelectionnee.y);
+            if (pieceADeplacer != null && pieceADeplacer.estBlanche() == joueurActuel.estBlanc()) {
+                List<Position> deplacements = pieceADeplacer.getDeplacementsPossibles(plateau, caseSelectionnee);
+
+                if (deplacements.contains(posCliquee)) {
+                    plateau.placerPiece(pieceADeplacer, x, y);
+                    plateau.placerPiece(null, caseSelectionnee.x, caseSelectionnee.y);
+                    joueurActuel = (joueurActuel == joueurBlanc) ? joueurNoir : joueurBlanc;
+                    
+                } else {
+                    System.out.println("Déplacement invalide !");
+                }
             }
 
             labels[caseSelectionnee.x][caseSelectionnee.y].setBorder(null);
             caseSelectionnee = null;
         }
     }
+
 
     @Override
     public void update(Observable o, Object arg) {
