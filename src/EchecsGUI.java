@@ -64,7 +64,7 @@ public class EchecsGUI implements Observer {
 
         // Roi noir
         plateau.placerPiece(
-                new DeplacementLigne(
+                new DecorateurRoi(
                         new PieceNeutre(false, "Roi", "img/roi_noir.png")
                 ),
                 0, 4
@@ -86,13 +86,13 @@ public class EchecsGUI implements Observer {
 
         // Cavaliers noirs
         plateau.placerPiece(
-                new DeplacementLigne(
+                new DecorateurCavalier(
                         new PieceNeutre(false, "Cavalier", "img/cavalier_noir.png")
                 ),
                 0, 1
         );
         plateau.placerPiece(
-                new DeplacementLigne(
+                new DecorateurCavalier(
                         new PieceNeutre(false, "Cavalier", "img/cavalier_noir.png")
                 ),
                 0, 6
@@ -137,7 +137,7 @@ public class EchecsGUI implements Observer {
 
         // Roi blanc
         plateau.placerPiece(
-                new DeplacementLigne(
+                new DecorateurRoi(
                         new PieceNeutre(true, "Roi", "img/roi_blanc.png")
                 ),
                 7, 4
@@ -159,13 +159,13 @@ public class EchecsGUI implements Observer {
 
         // Cavaliers blancs
         plateau.placerPiece(
-                new DeplacementLigne(
+                new DecorateurCavalier(
                         new PieceNeutre(true, "Cavalier", "img/cavalier_blanc.png")
                 ),
                 7, 1
         );
         plateau.placerPiece(
-                new DeplacementLigne(
+                new DecorateurCavalier(
                         new PieceNeutre(true, "Cavalier", "img/cavalier_blanc.png")
                 ),
                 7, 6
