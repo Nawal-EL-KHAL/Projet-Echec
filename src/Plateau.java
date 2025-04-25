@@ -4,9 +4,13 @@ import java.util.Observable;
 
 public class Plateau extends Observable {
     private Piece[][] cases;
+    private int axeX;
+    private int axeY;
 
     public Plateau() {
-        cases = new Piece[8][8];
+        axeX = 8;
+        axeY = 8;
+        cases = new Piece[axeX][axeY];
     }
 
     public void initialiserGrille() {
@@ -74,6 +78,12 @@ public class Plateau extends Observable {
         return cible != null && cible.estBlanche() == estBlanc;
     }
 
+    public int getAxeX() {
+        return axeX;
+    }
 
+    public int getAxeY() {
+        return axeY;
+    }
 }
 

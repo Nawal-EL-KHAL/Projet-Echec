@@ -20,7 +20,7 @@ class DecorateurCavalier extends DecorateurPiece {
             int x = pos.x + dx[dir];
             int y = pos.y + dy[dir];
 
-            if ((x >= 0 && x < 8 && y >= 0 && y < 8) && (plateau.estOccupeParAllie(new Position(x, y), estBlanche()))) continue;
+            if ((x >= 0 && x < plateau.getAxeX() && y >= 0 && y < plateau.getAxeY()) && (plateau.estOccupeParAllie(new Position(x, y), estBlanche()))) continue;
             positions.add(new Position(x, y));
 
         }

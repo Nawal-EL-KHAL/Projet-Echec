@@ -16,14 +16,14 @@ public class EchecsGUI implements Observer {
         frame = new JFrame("Échecs");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 600);
-        frame.setLayout(new GridLayout(8, 8));
-        labels = new JLabel[8][8];
         plateau = new Plateau();
+        frame.setLayout(new GridLayout(plateau.getAxeX(), plateau.getAxeY()));
+        labels = new JLabel[plateau.getAxeX()][plateau.getAxeY()];
         jeu = new Jeu(plateau);
         plateau.addObserver(this);
 
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
+        for (int i = 0; i < plateau.getAxeX(); i++) {
+            for (int j = 0; j < plateau.getAxeY(); j++) {
                 labels[i][j] = new JLabel();
                 labels[i][j].setOpaque(true);
                 labels[i][j].setBackground((i + j) % 2 == 0 ? Color.WHITE : Color.GRAY);
@@ -78,7 +78,7 @@ public class EchecsGUI implements Observer {
     public void viderSelection() {
         if (jeu.getCaseSelectionnee() != null) {
             Position pos = jeu.getCaseSelectionnee();
-            labels[pos.x][pos.y].setBorder(null); // Retire la bordure
+            labels[pos.x][pos.y].setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
         }
     }
 
@@ -86,8 +86,8 @@ public class EchecsGUI implements Observer {
 
 
     private void rafraichirGrille() {
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
+        for (int i = 0; i < plateau.getAxeX(); i++) {
+            for (int j = 0; j < plateau.getAxeY(); j++) {
                 Piece p = plateau.getPiece(i, j);
                 labels[i][j].setIcon(null);
                 if (p != null && p.getTypePiece() != null) {

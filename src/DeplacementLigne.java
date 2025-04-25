@@ -18,7 +18,7 @@ class DeplacementLigne extends DecorateurPiece {
         for (int dir = 0; dir < 4; dir++) {
             int x = pos.x + dx[dir];
             int y = pos.y + dy[dir];
-            while (x >= 0 && x < 8 && y >= 0 && y < 8) {
+            while (x >= 0 && x < plateau.getAxeX() && y >= 0 && y < plateau.getAxeY()) {
                 if (plateau.estOccupeParAllie(new Position(x, y), estBlanche())) break;
                 positions.add(new Position(x, y));
                 if (plateau.estOccupe(new Position(x, y))) break;
