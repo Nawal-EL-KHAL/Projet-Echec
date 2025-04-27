@@ -30,6 +30,7 @@ public class Jeu {
             if (estTourDuJoueur(posCliquee)) {
                 caseSelectionnee = posCliquee;
                 plateau.couleur();
+                plateau.afficherCasesAccessibles();
             } else {
                 System.out.println("Ce n'est pas ton tour !");
             }
@@ -49,6 +50,7 @@ public class Jeu {
                 }
             }
             plateau.viderSelection();
+            plateau.viderCasesAccessibles();
             caseSelectionnee = null;
         }
     }
@@ -69,11 +71,13 @@ public class Jeu {
             if (deplacements.contains(to)) {
                 // On sauvegarde l'état
                 Piece cible = plateau.getPiece(to.x, to.y);
+                plateau.viderCasesAccessibles();
                 plateau.placerPiece(piece, to.x, to.y);
                 plateau.placerPiece(null, from.x, from.y);
 
                 // Si le roi du joueur actuel est en échec après le déplacement, on annule
                 if (estPositionEchecPour(joueurActuel.estBlanc())) {
+                    plateau.viderCasesAccessibles();
                     plateau.placerPiece(piece, from.x, from.y);
                     plateau.placerPiece(cible, to.x, to.y);
                     return false;
