@@ -54,6 +54,11 @@ public class Plateau extends Observable {
         notifyObservers("rafraichissement");
     }
 
+    public void promotion(){
+        setChanged();
+        notifyObservers("promotion");
+    }
+
     public void viderSelection() {
         setChanged();
         notifyObservers("vider");

@@ -62,6 +62,26 @@ public class EchecsGUI implements Observer {
                 case "vider":
                     viderSelection();
                     break;
+                case "promotion":
+                    if (jeu.estPromotionEnAttente()) {
+                        String[] options = {"Reine", "Tour", "Fou", "Cavalier"};
+                        int choix = JOptionPane.showOptionDialog(
+                                null,
+                                "Choisissez la pièce de promotion :",
+                                "Promotion",
+                                JOptionPane.DEFAULT_OPTION,
+                                JOptionPane.QUESTION_MESSAGE,
+                                null,
+                                options,
+                                options[0]
+                        );
+
+                        if (choix >= 0) {
+                            jeu.traiterPromotion(options[choix]);
+                        } else {
+                            jeu.traiterPromotion("Reine"); // choix par défaut
+                        }
+                    }
                 default:
                     System.out.println("Type de mise à jour inconnu : " + arg);
             }
