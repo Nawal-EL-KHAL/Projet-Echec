@@ -11,7 +11,6 @@ public class EchecsGUI implements Observer {
     private Plateau plateau;
     private Jeu jeu;
 
-
     public EchecsGUI() {
         frame = new JFrame("Échecs");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -22,9 +21,18 @@ public class EchecsGUI implements Observer {
         jeu = new Jeu(plateau);
         plateau.addObserver(this);
 
+        // Création de l'interface graphique
         for (int i = 0; i < plateau.getAxeX(); i++) {
             for (int j = 0; j < plateau.getAxeY(); j++) {
-                labels[i][j] = new JLabel();
+                int finalI = i;
+                int finalJ = j;
+                labels[i][j] = new JLabel() {
+                    @Override
+                    protected void paintComponent(Graphics g) {
+                        super.paintComponent(g);
+                        paintCase(g, finalI, finalJ);  // Appelle la méthode pour dessiner sur la case
+                    }
+                };
                 labels[i][j].setOpaque(true);
                 labels[i][j].setBackground((i + j) % 2 == 0 ? Color.WHITE : Color.GRAY);
                 labels[i][j].setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
@@ -41,13 +49,11 @@ public class EchecsGUI implements Observer {
             }
         }
 
-
         frame.setVisible(true);
 
         plateau.initialiserGrille();
         jeu.commencer();
     }
-
 
     @Override
     public void update(Observable o, Object arg) {
@@ -62,6 +68,7 @@ public class EchecsGUI implements Observer {
                 case "vider":
                     viderSelection();
                     break;
+<<<<<<< HEAD
                 case "promotion":
                     if (jeu.estPromotionEnAttente()) {
                         String[] options = {"Reine", "Tour", "Fou", "Cavalier"};
@@ -82,6 +89,14 @@ public class EchecsGUI implements Observer {
                             jeu.traiterPromotion("Reine"); // choix par défaut
                         }
                     }
+=======
+                case "accessibilite":
+                    afficherCasesAccessibles();
+                    break;
+                case "viderCA":
+                    viderCasesAccessibles();
+                    break;
+>>>>>>> d2483d283ffc5005af44a32a930f55bf2ebbb15c
                 default:
                     System.out.println("Type de mise à jour inconnu : " + arg);
             }
@@ -91,7 +106,7 @@ public class EchecsGUI implements Observer {
     public void colorierSelection() {
         if (jeu.getCaseSelectionnee() != null) {
             Position pos = jeu.getCaseSelectionnee();
-            labels[pos.x][pos.y].setBorder(BorderFactory.createLineBorder(Color.BLUE, 3));  // ou une autre couleur
+            labels[pos.x][pos.y].setBorder(BorderFactory.createLineBorder(Color.BLUE, 3));
         }
     }
 
@@ -102,10 +117,63 @@ public class EchecsGUI implements Observer {
         }
     }
 
+    public void afficherCasesAccessibles() {
+        if (jeu.getCaseSelectionnee() != null) {
+            Position caseSelectionnee = jeu.getCaseSelectionnee();
+            Piece piece = plateau.getPiece(caseSelectionnee.x, caseSelectionnee.y);
+
+            if (piece != null) {
+                List<Position> deplacementsPossibles = piece.getDeplacementsPossibles(plateau, caseSelectionnee);
+
+                for (Position p : deplacementsPossibles) {
+                    if (p.x >= 0 && p.x < plateau.getAxeX() && p.y >= 0 && p.y < plateau.getAxeY()) {
+                        labels[p.x][p.y].repaint();  // Demande de redessiner la case
+                    }
+                }
+            }
+        }
+    }
+
+    public void viderCasesAccessibles() {
+        for (int i = 0; i < plateau.getAxeX(); i++) {
+            for (int j = 0; j < plateau.getAxeY(); j++) {
+                labels[i][j].setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
+                labels[i][j].repaint();
+            }
+        }
+    }
+
+    // Méthode pour redessiner les cases avec des cercles ou des filtres
+    private void paintCase(Graphics g, int x, int y) {
+        if (jeu.getCaseSelectionnee() != null) {
+            Position caseSelectionnee = jeu.getCaseSelectionnee();
+
+            // Ne pas appliquer de filtre bleu sur la case sélectionnée
+            if (x == caseSelectionnee.x && y == caseSelectionnee.y) {
+                return;  // La case est déjà sélectionnée, ne pas appliquer de filtre
+            }
+
+            if (plateau.estOccupe(new Position(x, y))) {
+                // Si la case est occupée, appliquer un filtre bleu transparent
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setColor(new Color(0, 0, 255, 80)); // Filtre bleu avec transparence
+                g2.fillRect(0, 0, labels[x][y].getWidth(), labels[x][y].getHeight());
+                g2.dispose();
+            } else if (!plateau.estOccupe(new Position(x, y))) {
+                // Si la case est accessible et vide, dessiner un cercle bleu
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setColor(Color.BLUE);
+                int diameter = Math.min(labels[x][y].getWidth(), labels[x][y].getHeight()) / 4;
+                int cx = (labels[x][y].getWidth() - diameter) / 2;
+                int cy = (labels[x][y].getHeight() - diameter) / 2;
+                g2.fillOval(cx, cy, diameter, diameter); // Dessine un rond bleu
+                g2.dispose();
+            }
+        }
+    }
 
 
-
-    private void rafraichirGrille() {
+    public void rafraichirGrille() {
         for (int i = 0; i < plateau.getAxeX(); i++) {
             for (int j = 0; j < plateau.getAxeY(); j++) {
                 Piece p = plateau.getPiece(i, j);
@@ -129,7 +197,6 @@ public class EchecsGUI implements Observer {
             }
         }
     }
-
 
     public static void main(String[] args) {
         new EchecsGUI();

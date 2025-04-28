@@ -64,10 +64,19 @@ public class Plateau extends Observable {
         notifyObservers("vider");
     }
 
-
     public void couleur(){
         setChanged();
         notifyObservers("couleur");
+    }
+
+    public void afficherCasesAccessibles() {
+        setChanged();
+        notifyObservers("accessibilite");
+    }
+
+    public void viderCasesAccessibles() {
+        setChanged();
+        notifyObservers("viderCA");
     }
 
     public Piece getPiece(int x, int y) {
