@@ -68,7 +68,7 @@ public class EchecsGUI implements Observer {
                 case "vider":
                     viderSelection();
                     break;
-<<<<<<< HEAD
+
                 case "promotion":
                     if (jeu.estPromotionEnAttente()) {
                         String[] options = {"Reine", "Tour", "Fou", "Cavalier"};
@@ -89,14 +89,14 @@ public class EchecsGUI implements Observer {
                             jeu.traiterPromotion("Reine"); // choix par défaut
                         }
                     }
-=======
+
                 case "accessibilite":
                     afficherCasesAccessibles();
                     break;
                 case "viderCA":
                     viderCasesAccessibles();
                     break;
->>>>>>> d2483d283ffc5005af44a32a930f55bf2ebbb15c
+
                 default:
                     System.out.println("Type de mise à jour inconnu : " + arg);
             }
