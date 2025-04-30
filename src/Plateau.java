@@ -99,5 +99,45 @@ public class Plateau extends Observable {
     public int getAxeY() {
         return axeY;
     }
+
+    public void demoPromotion() {
+        // Pion blanc prêt à être promu
+        placerPiece(new DeplacementPion(new PieceNeutre(true, Type.Pion)), 1, 4);
+
+        // Roi blanc
+        placerPiece(new DecorateurRoi(new PieceNeutre(true, Type.Roi)), 7, 7);
+
+        // Roi noir
+        placerPiece(new DecorateurRoi(new PieceNeutre(false, Type.Roi)), 0, 0);
+
+        relationVue();
+    }
+
+    public void demoEchec() {
+        // Roi noir
+        placerPiece(new DecorateurRoi(new PieceNeutre(false, Type.Roi)), 0, 4);
+
+        // Reine blanche qui attaque mais le roi peut encore fuir
+        placerPiece(new DeplacementDiagonale(new DeplacementLigne(new PieceNeutre(true, Type.Reine))), 1, 4);
+
+        // Roi blanc
+        placerPiece(new DecorateurRoi(new PieceNeutre(true, Type.Roi)), 7, 7);
+
+        relationVue();
+    }
+
+    public void demoEchecEtMat() {
+        // Roi noir coincé dans un coin
+        placerPiece(new DecorateurRoi(new PieceNeutre(false, Type.Roi)), 0, 0);
+
+        // Reine blanche qui donne mat
+        placerPiece(new DeplacementLigne(new DeplacementDiagonale(new PieceNeutre(true, Type.Reine))), 1, 1);
+
+        // Roi blanc à distance (ne participe pas à l’échec et mat mais nécessaire pour validité)
+        placerPiece(new DecorateurRoi(new PieceNeutre(true, Type.Roi)), 7, 7);
+
+        relationVue();
+    }
+
 }
 
