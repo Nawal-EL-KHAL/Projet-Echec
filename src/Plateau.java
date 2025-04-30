@@ -139,5 +139,26 @@ public class Plateau extends Observable {
         relationVue();
     }
 
+    public void demoPriseEnPassant() {
+        Piece pionBlanc = new DeplacementPion(new PieceNeutre(true, Type.Pion));
+        Piece pionNoir = new DeplacementPion(new PieceNeutre(false, Type.Pion));
+        Piece roiBlanc = new DecorateurRoi(new PieceNeutre(true, Type.Roi));
+        Piece roiNoir = new DecorateurRoi(new PieceNeutre(false, Type.Roi));
+
+        // Placer les rois pour éviter les erreurs d’échec
+        placerPiece(roiBlanc, 7, 4);
+        placerPiece(roiNoir, 0, 4);
+
+        // Le pion blanc vient de faire un double pas de (6,4) à (4,4)
+        placerPiece(pionBlanc, 6, 4);
+
+        // Le pion noir est en position de capture en passant à gauche du pion blanc
+        placerPiece(pionNoir, 4, 3);
+
+        relationVue();
+    }
+
+
+
 }
 
