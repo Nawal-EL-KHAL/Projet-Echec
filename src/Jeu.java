@@ -40,22 +40,28 @@ public class Jeu {
             if (!posCliquee.equals(caseSelectionnee)) {
                 boolean deplacementReussi = tenterDeplacer(caseSelectionnee, posCliquee);
                 if (!deplacementReussi) {
-                    System.out.println("Déplacement invalide !");
+                    System.out.println("Déplacement illégal !");
                 } else {
-                    if (estPositionEchec()) {
-                        System.out.println("Échec au roi " + (joueurActuel.estBlanc() ? "blanc" : "noir"));
-                    }
-
-                    if (estTermine()) {
-                        System.out.println("Fin de partie. Le joueur " + (joueurActuel.estBlanc() ? "noir" : "blanc") + " a gagné !");
+                    // Le tour a changé dans tenterDeplacer()
+                    boolean blancActuel = joueurActuel.estBlanc();
+                    if (estPositionEchecPour(blancActuel)) {
+                        if (estEchecEtMat(blancActuel)) {
+                            System.out.println("Échec et mat ! Le joueur " + (blancActuel ? "noir" : "blanc") + " a gagné !");
+                            estTermine = true;
+                        } else {
+                            System.out.println("Échec au roi " + (blancActuel ? "blanc" : "noir"));
+                        }
                     }
                 }
             }
+
             plateau.viderSelection();
             plateau.viderCasesAccessibles();
             caseSelectionnee = null;
         }
     }
+
+
 
     public Joueur getJoueurActuel() {
         return joueurActuel;
@@ -101,7 +107,12 @@ public class Jeu {
     public void commencer() {
         estTermine = false;
         if (estPositionEchec()) {
-            System.out.println("Échec au roi " + (joueurActuel.estBlanc() ? "blanc" : "noir") + " !");
+            if (estPositionEchecEtMat()) {
+                System.out.println("Échec et mat ! Le joueur " + (joueurActuel.estBlanc() ? "noir" : "blanc") + " a gagné !");
+                estTermine = true;
+            } else {
+                System.out.println("Échec au roi " + (joueurActuel.estBlanc() ? "blanc" : "noir"));
+            }
         }
     }
 
@@ -112,6 +123,10 @@ public class Jeu {
 
     public boolean estPositionEchec() {
         return estPositionEchecPour(joueurActuel.estBlanc());
+    }
+
+    public boolean estPositionEchecEtMat() {
+        return estEchecEtMat(joueurActuel.estBlanc());
     }
 
     private boolean estPositionEchecPour(boolean blanc) {
@@ -145,6 +160,49 @@ public class Jeu {
 
         return false;
     }
+
+    private boolean estEchecEtMat(boolean blanc) {
+
+        if (!estPositionEchecPour(blanc)) {
+            return false;
+        }
+
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                Piece piece = plateau.getPiece(i, j);
+                if (piece != null && piece.estBlanche() == blanc) {
+                    Position from = new Position(i, j);
+                    List<Position> deplacements = piece.getDeplacementsPossibles(plateau, from);
+                    for (Position to : deplacements) {
+
+                        if (to.x >= 0 && to.x < 8 && to.y >= 0 && to.y < 8) {
+                            // Sauvegarde de l'état
+                            Piece origine = piece;
+                            Piece cible = plateau.getPiece(to.x, to.y);
+
+                            // Simuler le déplacement
+                            plateau.placerPiece(origine, to.x, to.y);
+                            plateau.placerPiece(null, from.x, from.y);
+
+                            boolean enEchecApres = estPositionEchecPour(blanc);
+
+                            // Annuler la simulation
+                            plateau.placerPiece(origine, from.x, from.y);
+                            plateau.placerPiece(cible, to.x, to.y);
+
+                            if (!enEchecApres) {
+                                return false; // au moins un coup sauve le roi
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return true; // Aucun coup ne permet d'éviter l'échec
+    }
+
+
 
     public Position getCaseSelectionnee() {
         return caseSelectionnee;

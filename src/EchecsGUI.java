@@ -51,12 +51,14 @@ public class EchecsGUI implements Observer {
 
         frame.setVisible(true);
 
-        //plateau.initialiserGrille();
+        plateau.initialiserGrille();
         //plateau.demoPromotion();
-        //plateau.demoEchec(); // A MODIFIR
-        //plateau.demoEchecEtMat(); A MODIFIER
+        //plateau.demoEchec();
+        //plateau.demoEchecEtMat();
         //plateau.demoPriseEnPassant();
-        jeu.commencer();
+        //plateau.demoCoupIllegal();
+        //plateau.demoCoupIllegal2();
+        //jeu.commencer();
     }
 
     @Override

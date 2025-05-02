@@ -117,8 +117,11 @@ public class Plateau extends Observable {
         // Roi noir
         placerPiece(new DecorateurRoi(new PieceNeutre(false, Type.Roi)), 0, 4);
 
+        // Pion noir
+        placerPiece(new DeplacementPion(new PieceNeutre(false, Type.Pion)), 1, 4);
+
         // Reine blanche qui attaque mais le roi peut encore fuir
-        placerPiece(new DeplacementDiagonale(new DeplacementLigne(new PieceNeutre(true, Type.Reine))), 1, 4);
+        placerPiece(new DeplacementDiagonale(new DeplacementLigne(new PieceNeutre(true, Type.Reine))), 2, 5);
 
         // Roi blanc
         placerPiece(new DecorateurRoi(new PieceNeutre(true, Type.Roi)), 7, 7);
@@ -127,14 +130,17 @@ public class Plateau extends Observable {
     }
 
     public void demoEchecEtMat() {
-        // Roi noir coincé dans un coin
+        // Fou blanc
+        placerPiece(new DeplacementDiagonale(new PieceNeutre(true, Type.Fou)), 4, 4);
+
+        // Tour blanche
+        placerPiece(new DeplacementLigne(new PieceNeutre(true, Type.Tour)), 7, 1);
+
+        // Tour blanche
+        placerPiece(new DeplacementLigne(new PieceNeutre(true, Type.Tour)), 2, 7);
+
+        // Roi noir
         placerPiece(new DecorateurRoi(new PieceNeutre(false, Type.Roi)), 0, 0);
-
-        // Reine blanche qui donne mat
-        placerPiece(new DeplacementLigne(new DeplacementDiagonale(new PieceNeutre(true, Type.Reine))), 1, 1);
-
-        // Roi blanc à distance (ne participe pas à l’échec et mat mais nécessaire pour validité)
-        placerPiece(new DecorateurRoi(new PieceNeutre(true, Type.Roi)), 7, 7);
 
         relationVue();
     }
@@ -158,7 +164,31 @@ public class Plateau extends Observable {
         relationVue();
     }
 
+    public void demoCoupIllegal() {
+        // Roi blanc
+        placerPiece(new DecorateurRoi(new PieceNeutre(true, Type.Roi)), 4, 3);
 
+        // Cavalier noir
+        placerPiece(new DecorateurCavalier(new PieceNeutre(false, Type.Cavalier)), 4, 4);
+
+        // Tour noire
+        placerPiece(new DeplacementLigne(new PieceNeutre(false, Type.Tour)), 0, 4);
+
+        relationVue();
+    }
+
+    public void demoCoupIllegal2() {
+        // Roi blanc
+        placerPiece(new DecorateurRoi(new PieceNeutre(true, Type.Roi)), 4, 3);
+
+        // Cavalier blanc
+        placerPiece(new DecorateurCavalier(new PieceNeutre(true, Type.Cavalier)), 3, 3);
+
+        // Tour noire
+        placerPiece(new DeplacementLigne(new PieceNeutre(false, Type.Tour)), 0, 3);
+
+        relationVue();
+    }
 
 }
 
