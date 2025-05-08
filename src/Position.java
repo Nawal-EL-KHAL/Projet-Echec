@@ -18,4 +18,7 @@ public class Position {
     public int hashCode() {
         return 31 * x + y;
     }
+
+    public void setCaseSelectionnee(Position posCliquee) {
+    }
 }

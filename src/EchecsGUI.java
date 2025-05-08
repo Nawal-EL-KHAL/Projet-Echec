@@ -18,7 +18,7 @@ public class EchecsGUI implements Observer {
         plateau = new Plateau();
         frame.setLayout(new GridLayout(plateau.getAxeX(), plateau.getAxeY()));
         labels = new JLabel[plateau.getAxeX()][plateau.getAxeY()];
-        jeu = new Jeu(plateau);
+        jeu = new JeuEchec(plateau);
         plateau.addObserver(this);
 
         // Création de l'interface graphique
@@ -70,25 +70,28 @@ public class EchecsGUI implements Observer {
                     break;
 
                 case "promotion":
-                    if (jeu.estPromotionEnAttente()) {
-                        String[] options = {"Reine", "Tour", "Fou", "Cavalier"};
-                        int choix = JOptionPane.showOptionDialog(
-                                null,
-                                "Choisissez la pièce de promotion :",
-                                "Promotion",
-                                JOptionPane.DEFAULT_OPTION,
-                                JOptionPane.QUESTION_MESSAGE,
-                                null,
-                                options,
-                                options[0]
-                        );
+                    if (jeu instanceof JeuEchec){
+                        if (((JeuEchec) jeu).estPromotionEnAttente()) {
+                            String[] options = {"Reine", "Tour", "Fou", "Cavalier"};
+                            int choix = JOptionPane.showOptionDialog(
+                                    null,
+                                    "Choisissez la pièce de promotion :",
+                                    "Promotion",
+                                    JOptionPane.DEFAULT_OPTION,
+                                    JOptionPane.QUESTION_MESSAGE,
+                                    null,
+                                    options,
+                                    options[0]
+                            );
 
-                        if (choix >= 0) {
-                            jeu.traiterPromotion(options[choix]);
-                        } else {
-                            jeu.traiterPromotion("Reine"); // choix par défaut
+                            if (choix >= 0) {
+                                ((JeuEchec) jeu).traiterPromotion(options[choix]);
+                            } else {
+                                ((JeuEchec) jeu).traiterPromotion("Reine"); // choix par défaut
+                            }
                         }
-                    }
+                }
+
 
                 case "accessibilite":
                     afficherCasesAccessibles();
