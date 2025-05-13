@@ -10,6 +10,8 @@ public class EchecsGUI implements Observer {
     private JLabel[][] labels;
     private Plateau plateau;
     private Jeu jeu;
+    private DemoPlateau test;
+
 
     public EchecsGUI() {
         frame = new JFrame("Échecs");
@@ -52,13 +54,16 @@ public class EchecsGUI implements Observer {
         frame.setVisible(true);
 
         plateau.initialiserGrille();
-        //plateau.demoPromotion();
-        //plateau.demoEchec();
-        //plateau.demoEchecEtMat();
-        //plateau.demoPriseEnPassant();
-        //plateau.demoCoupIllegal();
-        //plateau.demoCoupIllegal2();
-        //jeu.commencer();
+
+        // TEST
+        test = new DemoPlateau(plateau);
+
+        //test.demoPromotion();
+        //test.demoEchec();
+        //test.demoEchecEtMat();
+        //test.demoPriseEnPassant();
+        //test.demoCoupIllegal();
+        //test.demoCoupIllegal2();
     }
 
     @Override
