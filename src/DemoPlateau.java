@@ -119,4 +119,19 @@ public class DemoPlateau extends PlateauEchecs {
         relationVue();
     }
 
+    public void demoPat() {
+        // Roi blanc
+        plateau.placerPiece(new DecorateurRoi(new PieceNeutre(true, Type.Roi)), 7, 7);
+
+        // Tour noire
+        plateau.placerPiece(new DecorateurLigne(new PieceNeutre(true, Type.Tour)), 1, 7);
+
+        // Tour noire
+        plateau.placerPiece(new DecorateurLigne(new PieceNeutre(true, Type.Tour)), 7, 2);
+
+        // Roi noir
+        plateau.placerPiece(new DecorateurRoi(new PieceNeutre(false, Type.Roi)), 0, 0);
+
+    }
+
 }

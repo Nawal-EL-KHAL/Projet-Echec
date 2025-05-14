@@ -32,35 +32,56 @@ public class JeuEchecs extends Jeu {
             if (!posCliquee.equals(caseSelectionnee)) {
                 // === Vérifie s'il s'agit d'une tentative de roque ===
                 Piece piece = plateau.getPiece(caseSelectionnee.x, caseSelectionnee.y);
+                boolean roqueEffectue = false;
+
                 if (piece != null && piece.getTypePiece() == Type.Roi) {
                     int ligne = caseSelectionnee.x;
 
-                    // Petit roque (roi va en y = 6)
+                    // Petit roque
                     if (posCliquee.equals(new Position(ligne, 6))) {
-                        boolean reussi = essayerRoque(
+                        roqueEffectue = essayerRoque(
                                 caseSelectionnee,
                                 new Position(ligne, 7),
                                 new Position(ligne, 6),
                                 new Position(ligne, 5)
                         );
-                        if (!reussi) System.out.println("Roque illégal !");
+                        if (!roqueEffectue) System.out.println("Roque illégal !");
                     }
-                    // Grand roque (roi va en y = 2)
+                    // Grand roque
                     else if (posCliquee.equals(new Position(ligne, 2))) {
-                        boolean reussi = essayerRoque(
+                        roqueEffectue = essayerRoque(
                                 caseSelectionnee,
                                 new Position(ligne, 0),
                                 new Position(ligne, 2),
                                 new Position(ligne, 3)
                         );
-                        if (!reussi) System.out.println("Roque illégal !");
+                        if (!roqueEffectue) System.out.println("Roque illégal !");
                     }
-                    // Sinon déplacement normal
-                    else {
-                        traiterDeplacementNormal(caseSelectionnee, posCliquee);
+                }
+
+                // Sinon déplacement normal
+                if (!roqueEffectue) {
+                    boolean deplacementReussi = tenterDeplacer(caseSelectionnee, posCliquee);
+                    if (!deplacementReussi) {
+                        System.out.println("Déplacement illégal !");
                     }
-                } else {
-                    traiterDeplacementNormal(caseSelectionnee, posCliquee);
+                }
+
+                // === Après un déplacement (roque ou non), vérifier échec, échec et mat ou pat ===
+                if (!estTermine) {
+                    boolean blancActuel = joueurActuel.estBlanc();
+
+                    if (estPositionEchecPour(blancActuel)) {
+                        if (estEchecEtMat(blancActuel)) {
+                            System.out.println("Échec et mat ! Le joueur " + (blancActuel ? "noir" : "blanc") + " a gagné !");
+                            estTermine = true;
+                        } else {
+                            System.out.println("Échec au roi " + (blancActuel ? "blanc." : "noir."));
+                        }
+                    } else if (!joueurAPossibiliteDeJouer(blancActuel)) {
+                        System.out.println("Pat ! Match nul.");
+                        estTermine = true;
+                    }
                 }
             }
 
@@ -328,6 +349,39 @@ public class JeuEchecs extends Jeu {
 
         changerTour();
         return true;
+    }
+
+    private boolean joueurAPossibiliteDeJouer(boolean estBlanc) {
+        for (int x = 0; x < plateau.getAxeX(); x++) {
+            for (int y = 0; y < plateau.getAxeY(); y++) {
+                Position from = new Position(x, y);
+                Piece piece = plateau.getPiece(x, y);
+
+                if (piece != null && piece.estBlanche() == estBlanc) {
+                    List<Position> deplacements = piece.getDeplacementsPossibles((PlateauEchecs) plateau, from);
+                    for (Position to : deplacements) {
+                        if (to.x >= 0 && to.x < 8 && to.y >= 0 && to.y < 8) {
+                            // On simule le déplacement
+                            Piece cible = plateau.getPiece(to.x, to.y);
+                            plateau.placerPiece(piece, to.x, to.y);
+                            plateau.placerPiece(null, from.x, from.y);
+
+                            boolean enEchec = estPositionEchecPour(estBlanc);
+
+                            // Annule le déplacement
+                            plateau.placerPiece(piece, from.x, from.y);
+                            plateau.placerPiece(cible, to.x, to.y);
+
+                            if (!enEchec) {
+                                return true; // Le joueur a au moins un coup légal
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+        return false;
     }
 
 
