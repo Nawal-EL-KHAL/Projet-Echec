@@ -27,4 +27,14 @@ class DecorateurRoi extends DecorateurPiece {
 
         return positions;
     }
+
+    @Override
+    public boolean aBouge() {
+        return piece.aBouge();
+    }
+
+    @Override
+    public void setABouge(boolean aBouge) {
+        piece.setABouge(aBouge);
+    }
 }

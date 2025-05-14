@@ -100,4 +100,23 @@ public class DemoPlateau extends PlateauEchecs {
         relationVue();
     }
 
+    public void demoRoque() {
+
+        // Pièces noires
+        plateau.placerPiece(new DecorateurRoi(new PieceNeutre(false, Type.Roi)), 0, 4);
+        plateau.placerPiece(new DecorateurLigne(new PieceNeutre(false, Type.Tour)), 0, 0);
+        plateau.placerPiece(new DecorateurLigne(new PieceNeutre(false, Type.Tour)), 0, 7);
+        for (int i = 0; i < 8; i++) {
+            plateau.placerPiece(new DecorateurPion(new PieceNeutre(false, Type.Pion)), 1, i);
+        }
+        // Pièces blanches
+        plateau.placerPiece(new DecorateurRoi(new PieceNeutre(true, Type.Roi)), 7, 4);
+        plateau.placerPiece(new DecorateurLigne(new PieceNeutre(true, Type.Tour)), 7, 0);
+        plateau.placerPiece(new DecorateurLigne(new PieceNeutre(true, Type.Tour)), 7, 7);
+        for (int i = 0; i < 8; i++) {
+            plateau.placerPiece(new DecorateurPion(new PieceNeutre(true, Type.Pion)), 6, i);
+        }
+        relationVue();
+    }
+
 }
