@@ -29,16 +29,5 @@ public abstract class Plateau extends Observable {
         return damier;
     }
 
-    public abstract void couleur();
-
-    public abstract void afficherCasesAccessibles();
-
-    public abstract void viderSelection();
-
-    public abstract void viderCasesAccessibles();
-
-    public abstract Piece getPiece(int x, int y);
-
-    public abstract void promotion();
 }
 

@@ -5,9 +5,14 @@ public class JeuEchecs extends Jeu {
     protected boolean promotionEnAttente = false;
     protected Position positionPromotion;
     protected boolean couleurPromotion; // blanc ou noir
+    protected Position dernierDoublePas = null; // position du pion qui a fait un double pas
+    protected boolean priseEnPassantPossible = false;
+    protected PlateauEchecs plateau;
 
-    public JeuEchecs(PlateauEchecs plateau) {
-        super(plateau);
+
+    public JeuEchecs(PlateauEchecs plateauEchecs) {
+        super(plateauEchecs);
+        this.plateau = plateauEchecs;
     }
 
     @Override
@@ -139,6 +144,21 @@ public class JeuEchecs extends Jeu {
         }
 
         List<Position> deplacements = piece.getDeplacementsPossibles((PlateauEchecs) plateau, from);
+        // === Prise en passant ===
+        if (priseEnPassantPossible && piece.getTypePiece() == Type.Pion) {
+            int direction = piece.estBlanche() ? -1 : 1;
+
+            // Vérifie si le déplacement est en diagonale vers une case vide
+            if (to.x - from.x == direction && plateau.getPiece(to.x, to.y) == null) {
+                if (dernierDoublePas != null && dernierDoublePas.x == from.x && dernierDoublePas.y == to.y) {
+                    // Exécute la prise en passant
+                    if (((to.y - from.y) == 1 && to.y < plateau.getAxeY()) ||((to.y - from.y) == -1 && to.y < 0)){
+                        deplacements.add(to);
+                        System.out.println("Prise en passant !");
+                    }
+                }
+            }
+        }
         if (deplacements.contains(to)) {
 
                 // On sauvegarde l'état
@@ -157,6 +177,19 @@ public class JeuEchecs extends Jeu {
                 }
                 piece.setABouge(true);
                 gererPromotion(to, piece);
+
+            // Réinitialisation de la prise en passant
+            priseEnPassantPossible = false;
+            dernierDoublePas = null;
+
+            // Détection du double pas d'un pion
+            if (piece.getTypePiece() == Type.Pion) {
+                int deltaX = to.x - from.x;
+                if (Math.abs(deltaX) == 2) {
+                    priseEnPassantPossible = true;
+                    dernierDoublePas = to;
+                }
+            }
 
                 changerTour();
                 return true;
