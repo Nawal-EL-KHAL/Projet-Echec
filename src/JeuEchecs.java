@@ -30,20 +30,37 @@ public class JeuEchecs extends Jeu {
             }
         } else {
             if (!posCliquee.equals(caseSelectionnee)) {
-                boolean deplacementReussi = tenterDeplacer(caseSelectionnee, posCliquee);
-                if (!deplacementReussi) {
-                    System.out.println("Déplacement illégal !");
-                } else {
-                    // Le tour a changé dans tenterDeplacer()
-                    boolean blancActuel = joueurActuel.estBlanc();
-                    if (estPositionEchecPour(blancActuel)) {
-                        if (estEchecEtMat(blancActuel)) {
-                            System.out.println("Échec et mat ! Le joueur " + (blancActuel ? "noir" : "blanc") + " a gagné !");
-                            estTermine = true;
-                        } else {
-                            System.out.println("Échec au roi " + (blancActuel ? "blanc." : "noir."));
-                        }
+                // === Vérifie s'il s'agit d'une tentative de roque ===
+                Piece piece = plateau.getPiece(caseSelectionnee.x, caseSelectionnee.y);
+                if (piece != null && piece.getTypePiece() == Type.Roi) {
+                    int ligne = caseSelectionnee.x;
+
+                    // Petit roque (roi va en y = 6)
+                    if (posCliquee.equals(new Position(ligne, 6))) {
+                        boolean reussi = essayerRoque(
+                                caseSelectionnee,
+                                new Position(ligne, 7),
+                                new Position(ligne, 6),
+                                new Position(ligne, 5)
+                        );
+                        if (!reussi) System.out.println("Roque illégal !");
                     }
+                    // Grand roque (roi va en y = 2)
+                    else if (posCliquee.equals(new Position(ligne, 2))) {
+                        boolean reussi = essayerRoque(
+                                caseSelectionnee,
+                                new Position(ligne, 0),
+                                new Position(ligne, 2),
+                                new Position(ligne, 3)
+                        );
+                        if (!reussi) System.out.println("Roque illégal !");
+                    }
+                    // Sinon déplacement normal
+                    else {
+                        traiterDeplacementNormal(caseSelectionnee, posCliquee);
+                    }
+                } else {
+                    traiterDeplacementNormal(caseSelectionnee, posCliquee);
                 }
             }
 
@@ -52,6 +69,25 @@ public class JeuEchecs extends Jeu {
             caseSelectionnee = null;
         }
     }
+
+
+    private void traiterDeplacementNormal(Position from, Position to) {
+        boolean deplacementReussi = tenterDeplacer(from, to);
+        if (!deplacementReussi) {
+            System.out.println("Déplacement illégal !");
+        } else {
+            boolean blancActuel = joueurActuel.estBlanc();
+            if (estPositionEchecPour(blancActuel)) {
+                if (estEchecEtMat(blancActuel)) {
+                    System.out.println("Échec et mat ! Le joueur " + (blancActuel ? "noir" : "blanc") + " a gagné !");
+                    estTermine = true;
+                } else {
+                    System.out.println("Échec au roi " + (blancActuel ? "blanc." : "noir."));
+                }
+            }
+        }
+    }
+
 
 
 
@@ -66,6 +102,21 @@ public class JeuEchecs extends Jeu {
 
     public boolean tenterDeplacer(Position from, Position to) {
         Piece piece = plateau.getPiece(from.x, from.y);
+
+        if (piece.getTypePiece() == Type.Roi) {
+            int y = piece.estBlanche() ? 7 : 0;
+
+            // Roque roi (court)
+            if (from.equals(new Position(4, y)) && to.equals(new Position(6, y))) {
+                return essayerRoque(from, new Position(7, y), to, new Position(5, y));
+            }
+
+            // Roque dame (long)
+            if (from.equals(new Position(4, y)) && to.equals(new Position(2, y))) {
+                return essayerRoque(from, new Position(0, y), to, new Position(3, y));
+            }
+        }
+
         List<Position> deplacements = piece.getDeplacementsPossibles((PlateauEchecs) plateau, from);
         if (deplacements.contains(to)) {
 
@@ -238,4 +289,46 @@ public class JeuEchecs extends Jeu {
             }
         }
     }
+
+    private boolean essayerRoque(Position roiFrom, Position tourFrom, Position roiTo, Position tourTo) {
+        Piece roi = plateau.getPiece(roiFrom.x, roiFrom.y);
+        Piece tour = plateau.getPiece(tourFrom.x, tourFrom.y);
+
+        // Vérifications
+        if (roi == null || tour == null) return false;
+        if (roi.getTypePiece() != Type.Roi || tour.getTypePiece() != Type.Tour) return false;
+        if (roi.getABouge() || tour.getABouge()) return false;
+
+        // Vérifie que les cases entre roi et tour sont libres (sur l'axe horizontal y)
+        int min = Math.min(roiFrom.y, tourFrom.y);
+        int max = Math.max(roiFrom.y, tourFrom.y);
+        for (int y = min + 1; y < max; y++) {
+            if (plateau.estOccupe(new Position(roiFrom.x, y))) return false;
+        }
+
+        // Vérifie que le roi n’est pas en échec et ne passe pas par une case attaquée
+        if (estPositionEchecPour(roi.estBlanche())) return false;
+        for (int y : new int[]{roiFrom.y, (roiFrom.y + roiTo.y) / 2, roiTo.y}) {
+            plateau.placerPiece(roi, roiFrom.x, y);
+            plateau.placerPiece(null, roiFrom.x, roiFrom.y);
+            boolean enEchec = estPositionEchecPour(roi.estBlanche());
+            plateau.placerPiece(roi, roiFrom.x, roiFrom.y);
+            plateau.placerPiece(null, roiFrom.x, y);
+            if (enEchec) return false;
+        }
+
+        // Déplace roi et tour
+        plateau.placerPiece(roi, roiTo.x, roiTo.y);
+        plateau.placerPiece(null, roiFrom.x, roiFrom.y);
+        roi.setABouge(true);
+
+        plateau.placerPiece(tour, tourTo.x, tourTo.y);
+        plateau.placerPiece(null, tourFrom.x, tourFrom.y);
+        tour.setABouge(true);
+
+        changerTour();
+        return true;
+    }
+
+
 }

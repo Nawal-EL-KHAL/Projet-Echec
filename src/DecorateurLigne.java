@@ -31,10 +31,9 @@ class DecorateurLigne extends DecorateurPiece {
     }
 
     @Override
-    public boolean aBouge() {
-        return piece.aBouge();
+    public boolean getABouge() {
+        return piece.getABouge();
     }
-
     @Override
     public void setABouge(boolean aBouge) {
         piece.setABouge(aBouge);

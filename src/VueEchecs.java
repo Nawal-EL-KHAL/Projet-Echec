@@ -16,11 +16,11 @@ public class VueEchecs extends Vue {
         getFrame().setTitle("Échecs");
         plateau.addObserver(this);
 
-        this.plateau.initialiserGrille();
+        //this.plateau.initialiserGrille();
 
 
         // TEST
-        //test = new DemoPlateau(plateau);
+        test = new DemoPlateau(plateau);
 
         //test.demoPromotion();
         //test.demoEchec();

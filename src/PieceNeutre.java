@@ -29,17 +29,26 @@ public class PieceNeutre implements Piece {
     public Type getTypePiece() {
         return typePiece;
     }
-
+/*
     @Override
-    public boolean aBouge() {
-        return aBouge;
+    public boolean getABouge() {
+        return getABouge();
     }
 
     @Override
     public void setABouge(boolean val) {
         this.aBouge = val;
     }
+*/
+    @Override
+    public boolean getABouge() {
+        return aBouge;
+    }
 
+    @Override
+    public void setABouge(boolean aBouge) {
+        this.aBouge = aBouge;
+    }
 
 
 }

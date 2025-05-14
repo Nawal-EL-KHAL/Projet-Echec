@@ -29,8 +29,8 @@ class DecorateurCavalier extends DecorateurPiece {
     }
 
     @Override
-    public boolean aBouge() {
-        return piece.aBouge();
+    public boolean getABouge() {
+        return piece.getABouge();
     }
 
     @Override
