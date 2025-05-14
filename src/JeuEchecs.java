@@ -41,7 +41,7 @@ public class JeuEchecs extends Jeu {
                             System.out.println("Échec et mat ! Le joueur " + (blancActuel ? "noir" : "blanc") + " a gagné !");
                             estTermine = true;
                         } else {
-                            System.out.println("Échec au roi " + (blancActuel ? "blanc" : "noir"));
+                            System.out.println("Échec au roi " + (blancActuel ? "blanc." : "noir."));
                         }
                     }
                 }
@@ -83,7 +83,7 @@ public class JeuEchecs extends Jeu {
                     plateau.placerPiece(cible, to.x, to.y);
                     return false;
                 }
-
+                piece.setABouge(true);
                 gererPromotion(to, piece);
 
                 changerTour();

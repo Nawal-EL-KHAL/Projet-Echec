@@ -4,6 +4,7 @@ import java.util.*;
 public class PieceNeutre implements Piece {
     private final Type typePiece;
     private boolean estBlanc;
+    private boolean aBouge = false;
     private Position position;
 
     public PieceNeutre(boolean estBlanc, Type typePiece) {
@@ -28,6 +29,17 @@ public class PieceNeutre implements Piece {
     public Type getTypePiece() {
         return typePiece;
     }
+
+    @Override
+    public boolean aBouge() {
+        return aBouge;
+    }
+
+    @Override
+    public void setABouge(boolean val) {
+        this.aBouge = val;
+    }
+
 
 
 }
