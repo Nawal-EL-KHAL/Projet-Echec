@@ -1,58 +1,23 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 import java.util.List;
 import java.util.Observable;
-import java.util.Observer;
 
-public class EchecsGUI implements Observer {
-    private JFrame frame;
-    private JLabel[][] labels;
-    private Plateau plateau;
-    private Jeu jeu;
+public class VueEchecs extends Vue{
 
-    public EchecsGUI() {
-        frame = new JFrame("Échecs");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(600, 600);
-        plateau = new Plateau();
-        frame.setLayout(new GridLayout(plateau.getAxeX(), plateau.getAxeY()));
-        labels = new JLabel[plateau.getAxeX()][plateau.getAxeY()];
-        jeu = new JeuEchec(plateau);
-        plateau.addObserver(this);
+    public VueEchecs() {
+        super();
+        getFrame().setTitle("Échecs");
 
-        // Création de l'interface graphique
-        for (int i = 0; i < plateau.getAxeX(); i++) {
-            for (int j = 0; j < plateau.getAxeY(); j++) {
-                int finalI = i;
-                int finalJ = j;
-                labels[i][j] = new JLabel() {
-                    @Override
-                    protected void paintComponent(Graphics g) {
-                        super.paintComponent(g);
-                        paintCase(g, finalI, finalJ);  // Appelle la méthode pour dessiner sur la case
-                    }
-                };
-                labels[i][j].setOpaque(true);
-                labels[i][j].setBackground((i + j) % 2 == 0 ? Color.WHITE : Color.GRAY);
-                labels[i][j].setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
-                labels[i][j].setHorizontalAlignment(SwingConstants.CENTER);
-                labels[i][j].setVerticalAlignment(SwingConstants.CENTER);
-                int x = i, y = j;
-                labels[i][j].addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mouseClicked(MouseEvent e) {
-                        jeu.gererClic(x, y);
-                    }
-                });
-                frame.add(labels[i][j]);
-            }
-        }
+        // TEST
+        //test = new DemoPlateau(plateau);
 
-        frame.setVisible(true);
-
-        plateau.initialiserGrille();
-        jeu.commencer();
+        //test.demoPromotion();
+        //test.demoEchec();
+        //test.demoEchecEtMat();
+        //test.demoPriseEnPassant();
+        //test.demoCoupIllegal();
+        //test.demoCoupIllegal2();
     }
 
     @Override
@@ -70,28 +35,21 @@ public class EchecsGUI implements Observer {
                     break;
 
                 case "promotion":
-                    if (jeu instanceof JeuEchec){
-                        if (((JeuEchec) jeu).estPromotionEnAttente()) {
-                            String[] options = {"Reine", "Tour", "Fou", "Cavalier"};
-                            int choix = JOptionPane.showOptionDialog(
-                                    null,
-                                    "Choisissez la pièce de promotion :",
-                                    "Promotion",
-                                    JOptionPane.DEFAULT_OPTION,
-                                    JOptionPane.QUESTION_MESSAGE,
-                                    null,
-                                    options,
-                                    options[0]
-                            );
+                    if (jeu.estPromotionEnAttente()) {
+                        String[] options = {"Reine", "Tour", "Fou", "Cavalier"};
+                        int choix = JOptionPane.showOptionDialog(
+                                null,
+                                "Choisissez la pièce de promotion :",
+                                "Promotion",
+                                JOptionPane.DEFAULT_OPTION,
+                                JOptionPane.QUESTION_MESSAGE,
+                                null,
+                                options,
+                                options[0]
+                        );
 
-                            if (choix >= 0) {
-                                ((JeuEchec) jeu).traiterPromotion(options[choix]);
-                            } else {
-                                ((JeuEchec) jeu).traiterPromotion("Reine"); // choix par défaut
-                            }
-                        }
-                }
-
+                        jeu.traiterPromotion(options[choix]);
+                    }
 
                 case "accessibilite":
                     afficherCasesAccessibles();
@@ -146,8 +104,9 @@ public class EchecsGUI implements Observer {
         }
     }
 
+    @Override
     // Méthode pour redessiner les cases avec des cercles ou des filtres
-    private void paintCase(Graphics g, int x, int y) {
+    protected void paintCase(Graphics g, int x, int y) {
         if (jeu.getCaseSelectionnee() != null) {
             Position caseSelectionnee = jeu.getCaseSelectionnee();
 
@@ -175,7 +134,7 @@ public class EchecsGUI implements Observer {
         }
     }
 
-
+    @Override
     public void rafraichirGrille() {
         for (int i = 0; i < plateau.getAxeX(); i++) {
             for (int j = 0; j < plateau.getAxeY(); j++) {
@@ -202,6 +161,6 @@ public class EchecsGUI implements Observer {
     }
 
     public static void main(String[] args) {
-        new EchecsGUI();
+        new VueEchecs();
     }
 }

@@ -6,11 +6,13 @@ public class Plateau extends Observable {
     private Piece[][] cases;
     private int axeX;
     private int axeY;
+    private boolean damier;
 
     public Plateau() {
         axeX = 8;
         axeY = 8;
         cases = new Piece[axeX][axeY];
+        damier = true;
     }
 
     public void initialiserGrille() {
@@ -42,6 +44,8 @@ public class Plateau extends Observable {
 
         relationVue();
     }
+
+
 
     public void placerPiece(Piece piece, int x, int y) {
         cases[x][y] = piece;
@@ -98,6 +102,10 @@ public class Plateau extends Observable {
 
     public int getAxeY() {
         return axeY;
+    }
+
+    public boolean isDamier() {
+        return damier;
     }
 }
 
