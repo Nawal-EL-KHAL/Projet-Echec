@@ -31,7 +31,6 @@ public abstract class Jeu {
         joueurActuel = (joueurActuel == joueurBlanc) ? joueurNoir : joueurBlanc;
     }
 
-    public abstract void commencer();
 
     public boolean estTermine() {
         return estTermine;

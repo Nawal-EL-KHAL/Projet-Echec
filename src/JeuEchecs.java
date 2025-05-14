@@ -97,17 +97,7 @@ public class JeuEchecs extends Jeu {
         joueurActuel = (joueurActuel == joueurBlanc) ? joueurNoir : joueurBlanc;
     }
 
-    public void commencer() {
-        estTermine = false;
-        if (estPositionEchec()) {
-            if (estPositionEchecEtMat()) {
-                System.out.println("Échec et mat ! Le joueur " + (joueurActuel.estBlanc() ? "noir" : "blanc") + " a gagné !");
-                estTermine = true;
-            } else {
-                System.out.println("Échec au roi " + (joueurActuel.estBlanc() ? "blanc" : "noir"));
-            }
-        }
-    }
+
 
     public boolean estTermine() {
         return estTermine;
