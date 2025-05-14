@@ -5,32 +5,21 @@ import java.util.Observable;
 
 public class VueEchecs extends Vue {
 
-    private static Plateau p = new PlateauEchecs();
-    private JeuEchecs jeuEchecs = new JeuEchecs((PlateauEchecs) p);
+    private static PlateauEchecs plateau = new PlateauEchecs();
+    private JeuEchecs jeuEchecs;
 
     public VueEchecs() {
-        super(p, new JeuEchecs((PlateauEchecs) p));  // Appel du constructeur parent d'abord
-        this.plateau = super.getPlateau();
+        super(plateau, new JeuEchecs((PlateauEchecs) plateau));  // Appel du constructeur parent d'abord
+
         this.jeuEchecs = (JeuEchecs) super.getJeu();  // récupère correctement l'objet JeuEchecs
 
-        System.out.println(super.getJeu());
         getFrame().setTitle("Échecs");
-        super.enregistrerObservateur();
-        this.plateau.initialiserGrille();
+        plateau.addObserver(this);
+        this.jeuEchecs.commencer();
+        //this.plateau.initialiserGrille();
 
         // TEST
-        //test = new DemoPlateau(plateau);
-        //test.demoPromotion();
-        //test.demoEchec();
-        //test.demoEchecEtMat();
-        //test.demoPriseEnPassant();
-        //test.demoCoupIllegal();
-        //test.demoCoupIllegal2();
-
-
-
-    // TEST
-        //test = new DemoPlateau(plateau);
+        test = new DemoPlateau(plateau);
 
         //test.demoPromotion();
         //test.demoEchec();

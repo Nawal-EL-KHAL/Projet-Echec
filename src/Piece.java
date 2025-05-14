@@ -6,9 +6,4 @@ public interface Piece {
     boolean estBlanche();
     Type getTypePiece();
 
-
-    public default List<Position> getDeplacementsPossibles(Plateau plateau, Position from){
-
-        return List.of();
-    }
     }

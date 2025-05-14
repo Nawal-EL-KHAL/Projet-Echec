@@ -7,7 +7,6 @@ import java.util.Observer;
 public abstract class Vue implements Observer {
     protected JFrame frame;
     protected JLabel[][] labels;
-    protected Plateau plateau;
     protected Jeu jeu;
     protected DemoPlateau test;
 
@@ -17,7 +16,7 @@ public abstract class Vue implements Observer {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 600);
         frame.setLayout(new GridLayout(plateau.getAxeX(), plateau.getAxeY()));
-        this.plateau = plateau;
+
         labels = new JLabel[plateau.getAxeX()][plateau.getAxeY()];
         this.jeu = jeu;
 
@@ -75,21 +74,12 @@ public abstract class Vue implements Observer {
         return frame;
     }
 
-    public Jeu getJeu() {
-        return jeu;
-    }
-
-    public Plateau getPlateau() {
-        return plateau;
-    }
 
     public JLabel[][] getLabels() {
         return labels;
     }
 
-    public void enregistrerObservateur() {
-        plateau.addObserver(this);
+    public Jeu getJeu() {
+        return jeu;
     }
-
-
 }

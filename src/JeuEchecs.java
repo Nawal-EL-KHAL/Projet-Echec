@@ -66,9 +66,9 @@ public class JeuEchecs extends Jeu {
 
     public boolean tenterDeplacer(Position from, Position to) {
         Piece piece = plateau.getPiece(from.x, from.y);
-        if (piece != null && piece.estBlanche() == joueurActuel.estBlanc()) {
-            List<Position> deplacements = piece.getDeplacementsPossibles((PlateauEchecs) plateau, from);
-            if (deplacements.contains(to)) {
+        List<Position> deplacements = piece.getDeplacementsPossibles((PlateauEchecs) plateau, from);
+        if (deplacements.contains(to)) {
+
                 // On sauvegarde l'état
                 Piece cible = plateau.getPiece(to.x, to.y);
                 plateau.viderCasesAccessibles();
@@ -77,6 +77,7 @@ public class JeuEchecs extends Jeu {
 
                 // Si le roi du joueur actuel est en échec après le déplacement, on annule
                 if (estPositionEchecPour(joueurActuel.estBlanc())) {
+
                     plateau.viderCasesAccessibles();
                     plateau.placerPiece(piece, from.x, from.y);
                     plateau.placerPiece(cible, to.x, to.y);
@@ -87,7 +88,7 @@ public class JeuEchecs extends Jeu {
 
                 changerTour();
                 return true;
-            }
+
         }
         return false;
     }
@@ -141,9 +142,13 @@ public class JeuEchecs extends Jeu {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 Piece p = plateau.getPiece(i, j);
+
                 if (p != null && p.estBlanche() != blanc) {
-                    List<Position> deplacements = p.getDeplacementsPossibles(plateau, new Position(i, j));
+
+                    List<Position> deplacements = p.getDeplacementsPossibles((PlateauEchecs) plateau, new Position(i, j));
+
                     if (deplacements.contains(positionRoi)) {
+
                         return true;
                     }
                 }
@@ -164,7 +169,7 @@ public class JeuEchecs extends Jeu {
                 Piece piece = plateau.getPiece(i, j);
                 if (piece != null && piece.estBlanche() == blanc) {
                     Position from = new Position(i, j);
-                    List<Position> deplacements = piece.getDeplacementsPossibles(plateau, from);
+                    List<Position> deplacements = piece.getDeplacementsPossibles((PlateauEchecs) plateau, from);
                     for (Position to : deplacements) {
 
                         if (to.x >= 0 && to.x < 8 && to.y >= 0 && to.y < 8) {
