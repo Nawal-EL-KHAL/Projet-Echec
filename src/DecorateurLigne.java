@@ -1,14 +1,14 @@
 // === Décorateur de déplacement en ligne ===
 import java.util.*;
 
-class DeplacementLigne extends DecorateurPiece {
+class DecorateurLigne extends DecorateurPiece {
 
-    public DeplacementLigne(Piece piece) {
+    public DecorateurLigne(Piece piece) {
         super(piece);
     }
 
     @Override
-    public List<Position> getDeplacementsPossibles(Plateau plateau, Position pos) {
+    public List<Position> getDeplacementsPossibles(PlateauEchecs plateau, Position pos) {
         List<Position> positions = new ArrayList<>();
         positions.addAll(super.getDeplacementsPossibles(plateau, pos));  // Copie les déplacements de la pièce de base
 

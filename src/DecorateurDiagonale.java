@@ -1,14 +1,14 @@
 // === Décorateur de déplacement en diagonale ===
 import java.util.*;
 
-class DeplacementDiagonale extends DecorateurPiece {
+class DecorateurDiagonale extends DecorateurPiece {
 
-    public DeplacementDiagonale(Piece piece) {
+    public DecorateurDiagonale(Piece piece) {
         super(piece);
     }
 
     @Override
-    public List<Position> getDeplacementsPossibles(Plateau plateau, Position pos) {
+    public List<Position> getDeplacementsPossibles(PlateauEchecs plateau, Position pos) {
         List<Position> positions = new ArrayList<>();
         positions.addAll(super.getDeplacementsPossibles(plateau, pos));  // Copie les déplacements de la pièce de base
 

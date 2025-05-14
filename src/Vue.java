@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -13,15 +12,15 @@ public abstract class Vue implements Observer {
     protected DemoPlateau test;
 
 
-    public Vue() {
+    public Vue(Plateau plateau, Jeu jeu) {
         frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 600);
-        plateau = new Plateau();
         frame.setLayout(new GridLayout(plateau.getAxeX(), plateau.getAxeY()));
+        this.plateau = plateau;
         labels = new JLabel[plateau.getAxeX()][plateau.getAxeY()];
-        jeu = new Jeu(plateau);
-        plateau.addObserver(this);
+        this.jeu = jeu;
+
 
         // Création de l'interface graphique
         for (int i = 0; i < plateau.getAxeX(); i++) {
@@ -60,8 +59,6 @@ public abstract class Vue implements Observer {
 
         frame.setVisible(true);
 
-        plateau.initialiserGrille();
-
 
     }
 
@@ -88,6 +85,10 @@ public abstract class Vue implements Observer {
 
     public JLabel[][] getLabels() {
         return labels;
+    }
+
+    public void enregistrerObservateur() {
+        plateau.addObserver(this);
     }
 
 

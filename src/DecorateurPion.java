@@ -2,14 +2,14 @@
 
 import java.util.*;
 
-class DeplacementPion extends DecorateurPiece {
+class DecorateurPion extends DecorateurPiece {
 
-    public DeplacementPion(Piece piece) {
+    public DecorateurPion(Piece piece) {
         super(piece);
     }
 
     @Override
-    public List<Position> getDeplacementsPossibles(Plateau plateau, Position pos) {
+    public List<Position> getDeplacementsPossibles(PlateauEchecs plateau, Position pos) {
         List<Position> positions = new ArrayList<>();
         int direction = estBlanche() ? -1 : 1;
         int x = pos.x + direction;

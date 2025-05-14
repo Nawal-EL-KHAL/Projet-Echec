@@ -3,13 +3,33 @@ import java.awt.*;
 import java.util.List;
 import java.util.Observable;
 
-public class VueEchecs extends Vue{
+public class VueEchecs extends Vue {
+
+    private static Plateau p = new PlateauEchecs();
+    private JeuEchecs jeuEchecs = new JeuEchecs((PlateauEchecs) p);
 
     public VueEchecs() {
-        super();
+        super(p, new JeuEchecs((PlateauEchecs) p));  // Appel du constructeur parent d'abord
+        this.plateau = super.getPlateau();
+        this.jeuEchecs = (JeuEchecs) super.getJeu();  // récupère correctement l'objet JeuEchecs
+
+        System.out.println(super.getJeu());
         getFrame().setTitle("Échecs");
+        super.enregistrerObservateur();
+        this.plateau.initialiserGrille();
 
         // TEST
+        //test = new DemoPlateau(plateau);
+        //test.demoPromotion();
+        //test.demoEchec();
+        //test.demoEchecEtMat();
+        //test.demoPriseEnPassant();
+        //test.demoCoupIllegal();
+        //test.demoCoupIllegal2();
+
+
+
+    // TEST
         //test = new DemoPlateau(plateau);
 
         //test.demoPromotion();
@@ -22,6 +42,7 @@ public class VueEchecs extends Vue{
 
     @Override
     public void update(Observable o, Object arg) {
+
         if (arg instanceof String) {
             switch ((String) arg) {
                 case "rafraichissement":
@@ -35,7 +56,7 @@ public class VueEchecs extends Vue{
                     break;
 
                 case "promotion":
-                    if (jeu.estPromotionEnAttente()) {
+                    if (jeuEchecs.estPromotionEnAttente()) {
                         String[] options = {"Reine", "Tour", "Fou", "Cavalier"};
                         int choix = JOptionPane.showOptionDialog(
                                 null,
@@ -48,7 +69,7 @@ public class VueEchecs extends Vue{
                                 options[0]
                         );
 
-                        jeu.traiterPromotion(options[choix]);
+                        jeuEchecs.traiterPromotion(options[choix]);
                     }
 
                 case "accessibilite":
@@ -65,22 +86,22 @@ public class VueEchecs extends Vue{
     }
 
     public void colorierSelection() {
-        if (jeu.getCaseSelectionnee() != null) {
-            Position pos = jeu.getCaseSelectionnee();
+        if (jeuEchecs != null && jeuEchecs.getCaseSelectionnee() != null) {
+            Position pos = jeuEchecs.getCaseSelectionnee();
             labels[pos.x][pos.y].setBorder(BorderFactory.createLineBorder(Color.BLUE, 3));
         }
     }
 
     public void viderSelection() {
-        if (jeu.getCaseSelectionnee() != null) {
-            Position pos = jeu.getCaseSelectionnee();
+        if (jeuEchecs.getCaseSelectionnee() != null) {
+            Position pos = jeuEchecs.getCaseSelectionnee();
             labels[pos.x][pos.y].setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
         }
     }
 
     public void afficherCasesAccessibles() {
-        if (jeu.getCaseSelectionnee() != null) {
-            Position caseSelectionnee = jeu.getCaseSelectionnee();
+        if (jeuEchecs.getCaseSelectionnee() != null) {
+            Position caseSelectionnee = jeuEchecs.getCaseSelectionnee();
             Piece piece = plateau.getPiece(caseSelectionnee.x, caseSelectionnee.y);
 
             if (piece != null) {
@@ -107,32 +128,33 @@ public class VueEchecs extends Vue{
     @Override
     // Méthode pour redessiner les cases avec des cercles ou des filtres
     protected void paintCase(Graphics g, int x, int y) {
-        if (jeu.getCaseSelectionnee() != null) {
-            Position caseSelectionnee = jeu.getCaseSelectionnee();
+        if (jeu == null || jeuEchecs.getCaseSelectionnee() == null) {
+            return;
+        }
 
-            // Ne pas appliquer de filtre bleu sur la case sélectionnée
-            if (x == caseSelectionnee.x && y == caseSelectionnee.y) {
-                return;  // La case est déjà sélectionnée, ne pas appliquer de filtre
-            }
+        Position caseSelectionnee = jeuEchecs.getCaseSelectionnee();
 
-            if (plateau.estOccupe(new Position(x, y))) {
-                // Si la case est occupée, appliquer un filtre bleu transparent
-                Graphics2D g2 = (Graphics2D) g.create();
-                g2.setColor(new Color(0, 0, 255, 80)); // Filtre bleu avec transparence
-                g2.fillRect(0, 0, labels[x][y].getWidth(), labels[x][y].getHeight());
-                g2.dispose();
-            } else if (!plateau.estOccupe(new Position(x, y))) {
-                // Si la case est accessible et vide, dessiner un cercle bleu
-                Graphics2D g2 = (Graphics2D) g.create();
-                g2.setColor(Color.BLUE);
-                int diameter = Math.min(labels[x][y].getWidth(), labels[x][y].getHeight()) / 4;
-                int cx = (labels[x][y].getWidth() - diameter) / 2;
-                int cy = (labels[x][y].getHeight() - diameter) / 2;
-                g2.fillOval(cx, cy, diameter, diameter); // Dessine un rond bleu
-                g2.dispose();
-            }
+        if (x == caseSelectionnee.x && y == caseSelectionnee.y) {
+            return;
+        }
+
+        if (plateau.estOccupe(new Position(x, y))) {
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setColor(new Color(0, 0, 255, 80));
+            g2.fillRect(0, 0, labels[x][y].getWidth(), labels[x][y].getHeight());
+            g2.dispose();
+        } else {
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setColor(Color.BLUE);
+            int diameter = Math.min(labels[x][y].getWidth(), labels[x][y].getHeight()) / 4;
+            int cx = (labels[x][y].getWidth() - diameter) / 2;
+            int cy = (labels[x][y].getHeight() - diameter) / 2;
+            g2.fillOval(cx, cy, diameter, diameter);
+            g2.dispose();
         }
     }
+
+
 
     @Override
     public void rafraichirGrille() {
