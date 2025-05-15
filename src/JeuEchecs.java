@@ -132,6 +132,7 @@ public class JeuEchecs extends Jeu {
                     // Exécute la prise en passant
                     if (((to.y - from.y) == 1 && to.y < plateau.getAxeY()) ||((to.y - from.y) == -1 && to.y < 0)){
                         deplacements.add(to);
+                        plateau.placerPiece(null, dernierDoublePas.x, dernierDoublePas.y);
                         System.out.println("Prise en passant !");
                     }
                 }
