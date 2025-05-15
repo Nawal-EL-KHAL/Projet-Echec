@@ -23,23 +23,11 @@ public class PieceNeutre implements Piece {
         return estBlanc;
     }
 
-
-
     @Override
     public Type getTypePiece() {
         return typePiece;
     }
-/*
-    @Override
-    public boolean getABouge() {
-        return getABouge();
-    }
 
-    @Override
-    public void setABouge(boolean val) {
-        this.aBouge = val;
-    }
-*/
     @Override
     public boolean getABouge() {
         return aBouge;
@@ -49,6 +37,4 @@ public class PieceNeutre implements Piece {
     public void setABouge(boolean aBouge) {
         this.aBouge = aBouge;
     }
-
-
 }

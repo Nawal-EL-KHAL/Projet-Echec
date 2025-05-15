@@ -23,7 +23,6 @@ public class JeuEchecs extends Jeu {
         }
 
         Position posCliquee = new Position(x, y);
-        Piece pieceCliquee = plateau.getPiece(x, y);
 
         if (caseSelectionnee == null) {
             if (estTourDuJoueur(posCliquee)) {
@@ -95,27 +94,6 @@ public class JeuEchecs extends Jeu {
             caseSelectionnee = null;
         }
     }
-
-
-    private void traiterDeplacementNormal(Position from, Position to) {
-        boolean deplacementReussi = tenterDeplacer(from, to);
-        if (!deplacementReussi) {
-            System.out.println("Déplacement illégal !");
-        } else {
-            boolean blancActuel = joueurActuel.estBlanc();
-            if (estPositionEchecPour(blancActuel)) {
-                if (estEchecEtMat(blancActuel)) {
-                    System.out.println("Échec et mat ! Le joueur " + (blancActuel ? "noir" : "blanc") + " a gagné !");
-                    estTermine = true;
-                } else {
-                    System.out.println("Échec au roi " + (blancActuel ? "blanc." : "noir."));
-                }
-            }
-        }
-    }
-
-
-
 
     public Joueur getJoueurActuel() {
         return joueurActuel;
@@ -202,19 +180,8 @@ public class JeuEchecs extends Jeu {
         joueurActuel = (joueurActuel == joueurBlanc) ? joueurNoir : joueurBlanc;
     }
 
-
-
     public boolean estTermine() {
         return estTermine;
-    }
-
-
-    public boolean estPositionEchec() {
-        return estPositionEchecPour(joueurActuel.estBlanc());
-    }
-
-    public boolean estPositionEchecEtMat() {
-        return estEchecEtMat(joueurActuel.estBlanc());
     }
 
     private boolean estPositionEchecPour(boolean blanc) {

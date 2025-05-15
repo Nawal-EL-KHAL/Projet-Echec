@@ -24,7 +24,6 @@ class DecorateurRoi extends DecorateurPiece {
             positions.add(new Position(x, y));
 
         }
-
         return positions;
     }
 
