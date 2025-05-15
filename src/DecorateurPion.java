@@ -9,7 +9,7 @@ class DecorateurPion extends DecorateurPiece {
     }
 
     @Override
-    public List<Position> getDeplacementsPossibles(PlateauEchecs plateau, Position pos) {
+    public List<Position> getDeplacementsPossibles(Plateau plateau, Position pos) {
         List<Position> positions = new ArrayList<>();
         int direction = estBlanche() ? -1 : 1;
         int x = pos.x + direction;

@@ -14,7 +14,7 @@ public class PieceNeutre implements Piece {
 
 
     @Override
-    public List<Position> getDeplacementsPossibles(PlateauEchecs plateau, Position pos) {
+    public List<Position> getDeplacementsPossibles(Plateau plateau, Position pos) {
         return Collections.emptyList(); // le déplacement vient du décorateur
     }
 

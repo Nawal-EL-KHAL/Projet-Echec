@@ -8,7 +8,7 @@ public abstract class DecorateurPiece implements Piece {
         this.piece = piece;
     }
 
-    public List<Position> getDeplacementsPossibles(PlateauEchecs plateau, Position pos) {
+    public List<Position> getDeplacementsPossibles(Plateau plateau, Position pos) {
         return piece.getDeplacementsPossibles(plateau, pos);
     }
 

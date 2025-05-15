@@ -17,7 +17,7 @@ public class PlateauEchecs extends Plateau {
         placerPiece(new DecorateurCavalier(new PieceNeutre(false, Type.Cavalier)), 0, 6);
         placerPiece(new DecorateurDiagonale(new PieceNeutre(false, Type.Fou)), 0, 2);
         placerPiece(new DecorateurDiagonale(new PieceNeutre(false, Type.Fou)), 0, 5);
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < axeY; i++) {
             placerPiece(new DecorateurPion(new PieceNeutre(false, Type.Pion)), 1, i);
         }
 
@@ -30,7 +30,7 @@ public class PlateauEchecs extends Plateau {
         placerPiece(new DecorateurCavalier(new PieceNeutre(true, Type.Cavalier)), 7, 6);
         placerPiece(new DecorateurDiagonale(new PieceNeutre(true, Type.Fou)), 7, 2);
         placerPiece(new DecorateurDiagonale(new PieceNeutre(true, Type.Fou)), 7, 5);
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < axeY; i++) {
             placerPiece(new DecorateurPion(new PieceNeutre(true, Type.Pion)), 6, i);
         }
 
@@ -72,30 +72,12 @@ public class PlateauEchecs extends Plateau {
         notifyObservers("viderCA");
     }
 
-    public Piece getPiece(int x, int y) {
-        if (x < 0 || x >= 8 || y < 0 || y >= 8) return null;
-        return cases[x][y];
-    }
-
-    public boolean estOccupe(Position p) {
-        return getPiece(p.x, p.y) != null;
-    }
-
-    public boolean estOccupeParAllie(Position p, boolean estBlanc) {
-        Piece cible = getPiece(p.x, p.y);
-        return cible != null && cible.estBlanche() == estBlanc;
-    }
-
-    public int getAxeX() {
-        return axeX;
-    }
-
-    public int getAxeY() {
-        return axeY;
-    }
-
-    public boolean isDamier() {
-        return damier;
-    }
 }
+
+
+
+
+
+
+
 

@@ -14,8 +14,15 @@ public abstract class Plateau extends Observable {
 
     public abstract void relationVue();
 
-    public abstract boolean estOccupe(Position p);
-    
+    public boolean estOccupe(Position p) {
+        return getPiece(p.x, p.y) != null;
+    }
+
+
+    public boolean estOccupeParAllie(Position p, boolean estBlanc) {
+        Piece cible = getPiece(p.x, p.y);
+        return cible != null && cible.estBlanche() == estBlanc;
+    }
 
     public int getAxeX() {
         return axeX;
@@ -27,6 +34,11 @@ public abstract class Plateau extends Observable {
 
     public boolean isDamier() {
         return damier;
+    }
+
+    public Piece getPiece(int x, int y) {
+        if (x < 0 || x >= axeX || y < 0 || y >= axeY) return null;
+        return cases[x][y];
     }
 
 }

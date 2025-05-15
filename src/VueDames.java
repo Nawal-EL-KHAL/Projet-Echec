@@ -3,33 +3,22 @@ import java.awt.*;
 import java.util.List;
 import java.util.Observable;
 
-public class VueEchecs extends Vue {
+public class VueDames extends Vue {
 
-    private static PlateauEchecs plateau = new PlateauEchecs();
-    private JeuEchecs jeuEchecs;
+    private static PlateauDames plateau = new PlateauDames();
+    private JeuDames jeuDames;
 
-    public VueEchecs() {
-        super(plateau, new JeuEchecs((PlateauEchecs) plateau));  // Appel du constructeur parent d'abord
+    public VueDames() {
+        super(plateau, new JeuDames((PlateauDames) plateau));  // Appel du constructeur parent d'abord
 
-        this.jeuEchecs = (JeuEchecs) super.getJeu();  // récupère correctement l'objet JeuEchecs
+        this.jeuDames = (JeuDames) super.getJeu();  // récupère correctement l'objet JeuEchecs
 
-        getFrame().setTitle("Échecs");
+        getFrame().setTitle("Dames");
         plateau.addObserver(this);
 
-        //this.plateau.initialiserGrille();
+        this.plateau.initialiserGrille();
 
 
-        // TEST
-        test = new DemoPlateau(plateau);
-
-        //test.demoPromotion();
-        //test.demoEchec();
-        //test.demoEchecEtMat();
-        //test.demoPriseEnPassant();
-        test.demoRoque();
-        //test.demoPat();
-        //test.demoCoupIllegal();
-        //test.demoCoupIllegal2();
     }
 
     @Override
@@ -47,22 +36,6 @@ public class VueEchecs extends Vue {
                     viderSelection();
                     break;
 
-                case "promotion":
-                    if (jeuEchecs.estPromotionEnAttente()) {
-                        String[] options = {"Reine", "Tour", "Fou", "Cavalier"};
-                        int choix = JOptionPane.showOptionDialog(
-                                null,
-                                "Choisissez la pièce de promotion :",
-                                "Promotion",
-                                JOptionPane.DEFAULT_OPTION,
-                                JOptionPane.QUESTION_MESSAGE,
-                                null,
-                                options,
-                                options[0]
-                        );
-
-                        jeuEchecs.traiterPromotion(options[choix]);
-                    }
 
                 case "accessibilite":
                     afficherCasesAccessibles();
@@ -78,22 +51,22 @@ public class VueEchecs extends Vue {
     }
 
     public void colorierSelection() {
-        if (jeuEchecs != null && jeuEchecs.getCaseSelectionnee() != null) {
-            Position pos = jeuEchecs.getCaseSelectionnee();
+        if (jeuDames != null && jeuDames.getCaseSelectionnee() != null) {
+            Position pos = jeuDames.getCaseSelectionnee();
             labels[pos.x][pos.y].setBorder(BorderFactory.createLineBorder(Color.BLUE, 3));
         }
     }
 
     public void viderSelection() {
-        if (jeuEchecs.getCaseSelectionnee() != null) {
-            Position pos = jeuEchecs.getCaseSelectionnee();
+        if (jeuDames.getCaseSelectionnee() != null) {
+            Position pos = jeuDames.getCaseSelectionnee();
             labels[pos.x][pos.y].setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
         }
     }
 
     public void afficherCasesAccessibles() {
-        if (jeuEchecs.getCaseSelectionnee() != null) {
-            Position caseSelectionnee = jeuEchecs.getCaseSelectionnee();
+        if (jeuDames.getCaseSelectionnee() != null) {
+            Position caseSelectionnee = jeuDames.getCaseSelectionnee();
             Piece piece = plateau.getPiece(caseSelectionnee.x, caseSelectionnee.y);
 
             if (piece != null) {
@@ -120,11 +93,11 @@ public class VueEchecs extends Vue {
     @Override
     // Méthode pour redessiner les cases avec des cercles ou des filtres
     protected void paintCase(Graphics g, int x, int y) {
-        if (jeu == null || jeuEchecs.getCaseSelectionnee() == null) {
+        if (jeu == null || jeuDames.getCaseSelectionnee() == null) {
             return;
         }
 
-        Position caseSelectionnee = jeuEchecs.getCaseSelectionnee();
+        Position caseSelectionnee = jeuDames.getCaseSelectionnee();
 
         if (x == caseSelectionnee.x && y == caseSelectionnee.y) {
             return;
@@ -156,11 +129,6 @@ public class VueEchecs extends Vue {
                 labels[i][j].setIcon(null);
                 if (p != null && p.getTypePiece() != null) {
                     String chemin = switch (p.getTypePiece()) {
-                        case Roi -> p.estBlanche() ? "img/roi_blanc.png" : "img/roi_noir.png";
-                        case Reine -> p.estBlanche() ? "img/reine_blanc.png" : "img/reine_noir.png";
-                        case Fou -> p.estBlanche() ? "img/fou_blanc.png" : "img/fou_noir.png";
-                        case Cavalier -> p.estBlanche() ? "img/cavalier_blanc.png" : "img/cavalier_noir.png";
-                        case Tour -> p.estBlanche() ? "img/tour_blanc.png" : "img/tour_noir.png";
                         case Pion -> p.estBlanche() ? "img/pion_blanc.png" : "img/pion_noir.png";
                         default -> null;
                     };
@@ -175,6 +143,6 @@ public class VueEchecs extends Vue {
     }
 
     public static void main(String[] args) {
-        new VueEchecs();
+        new VueDames();
     }
 }
